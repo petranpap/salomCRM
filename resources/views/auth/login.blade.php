@@ -173,7 +173,7 @@
 </style>
 
     {{-- App name --}}
-    <h1 class="login-title">{{ config('app.name', 'Salon CRM') }}</h1>
+    <h1 class="login-title">{{ config('app.name', 'Studio Kassandra') }}</h1>
 
     {{-- Session status (e.g. password reset link sent) --}}
     @if (session('status'))

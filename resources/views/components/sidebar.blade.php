@@ -6,7 +6,7 @@
     {{-- Brand --}}
     <div class="h-16 flex flex-col justify-center px-5 shrink-0 border-b border-ts-border-soft">
         <a href="{{ route('dashboard') }}" class="font-display text-lg leading-tight tracking-tight text-ts-primary">
-            {{ config('app.name', 'Salon CRM') }}
+            {{ config('app.name', 'Studio Kassandra') }}
         </a>
         <span class="text-[10px] font-semibold uppercase tracking-widest text-ts-text-subtle mt-0.5">
             @if(auth()->user()?->isSuperAdmin()) Platform Admin

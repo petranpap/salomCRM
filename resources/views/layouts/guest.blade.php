@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'Salon CRM') }}</title>
+    <title>{{ config('app.name', 'Studio Kassandra') }}</title>
 
     {{-- Fonts: DM Serif Display + Material Symbols (app.css already loads DM Sans + JetBrains Mono) --}}
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>

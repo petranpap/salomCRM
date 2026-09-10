@@ -977,3 +977,38 @@ That surfaced two genuine bugs in the app, not the test:
   `sometimes` for updates.
 - **Full suite: 24/24 passing, zero failures** — the first fully green run of this project this
   entire engagement (was 25 failed/4 passed at the start of Round 6).
+
+---
+
+## Round 21 (2026-09-10) — Renamed to Studio Kassandra, real README
+
+The product now has a real name — **Studio Kassandra** ("salon management, done right") —
+replacing the placeholder "Salon Manager"/"Salon CRM" used throughout. Updated everywhere that
+name actually surfaces, not just the README:
+
+- `APP_NAME` in `.env`/`.env.example`, and `config/app.php`'s fallback default.
+- Every hardcoded fallback default that only kicks in if `APP_NAME` is ever unset
+  (`resources/views/layouts/app.blade.php` and `guest.blade.php`'s `<title>`, the sidebar
+  brand text, the login page heading) — these were already reading from `config('app.name')`
+  correctly, just with stale fallback text that would only ever show up if the env var broke.
+- `composer.json` — was still the literal, never-customized Laravel skeleton defaults
+  (`"name": "laravel/laravel"`, `"description": "The skeleton application for the Laravel
+  framework."`, `"license": "MIT"`) despite this being a real, proprietary product. Fixed to
+  `petranpap/studio-kassandra`, a real description, and `"license": "proprietary"` — the README
+  already said proprietary; composer.json just never matched it.
+- `package.json`'s name/description.
+- The one hardcoded (and, on checking, entirely unused/dead — grepped for any `trans('messages...'`
+  or `__('messages...'` call, found none) Greek welcome string in `resources/lang/el/messages.php`.
+
+**New `README.md`**, replacing the original generic, partly-inaccurate one (it referenced DaisyUI
+and Spatie MediaLibrary as if in use — neither actually is, confirmed: DaisyUI is an unused
+`package.json` dependency never wired into `tailwind.config.js`'s plugins, and MediaLibrary isn't
+installed at all, per Round 9) with one reflecting the real, current feature set, the real stack,
+accurate setup steps (including `make:superadmin` and `storage:link`, both missing from the
+original), a note on the new CI/CD pipeline, and a real license line instead of a leftover MIT
+placeholder.
+
+**Verified:** `config('app.name')` resolves to "Studio Kassandra" after `config:clear` (confirms
+the quoted `.env` value parses correctly), and the full suite still passes 24/24 — a branding
+change touches no application logic, but worth confirming nothing was holding a stale cached
+config.

@@ -1,77 +1,104 @@
-# Salon Management Web Application
+# Studio Kassandra
 
-Welcome to the Salon Management Web Application! This application is designed to help salon owners manage their appointments, customers, products, and inventory efficiently. Built with Laravel 11, PHP 8.2, and MySQL/MariaDB, it offers a modern and responsive user interface using TailwindCSS and DaisyUI.
+**Salon management, done right.**
 
-## Features
+A multi-tenant salon management platform built for Cyprus salons — appointments,
+customers, staff, inventory, payments, and VAT-correct branded receipts, with SMS
+reminders through Cyta's Web SMS API.
 
-- **Appointments Management**: Schedule, update, and manage appointments with a user-friendly calendar interface.
-- **Customer Management**: Maintain customer profiles, treatment history, and communication preferences.
-- **Product Inventory**: Manage products with detailed information, including stock levels and low-stock alerts.
-- **To-Do Lists**: Keep track of tasks and reminders related to appointments and inventory.
-- **Dashboard**: Get an overview of today's appointments, low-stock products, and quick actions.
+[![Tests](https://github.com/petranpap/salomCRM/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/petranpap/salomCRM/actions/workflows/ci-cd.yml)
 
-## Installation
+## What it does
 
-1. **Clone the repository**:
+- **Appointments** — calendar-based booking with double-booking protection (a customer
+  can't be booked twice at overlapping times), and hours that respect a midday closure
+  (e.g. 09:00–13:30, then 16:00–18:30), for both salon opening hours and individual
+  staff schedules.
+- **Customers** — profiles, treatment history, SMS/email consent, VIP and behavior
+  flags (auto-flagged on no-shows or lateness).
+- **Staff** — accounts, roles (owner/staff), working hours, per-staff calendar colors.
+  Owners can reset a staff member's password (forcing them to set their own on next
+  login) and deactivate someone without destroying their appointment/treatment
+  history. Login lockout after 3 failed attempts (30 minutes), resettable by a
+  super-admin.
+- **Products & inventory** — stock levels, low-stock indicators, and a direct
+  "Sell Products" flow for walk-in retail sales with no appointment attached.
+- **Payments & receipts** — cash/card/bank transfer, VAT breakdown (inclusive VAT,
+  matching Cyprus VAT rules), a salon's own logo/brand colors, and a choice of three
+  receipt layouts (Classic / Modern / Minimal) with a live preview before saving.
+- **SMS reminders** — a pluggable driver architecture (`App\Services\Sms`) so adding a
+  new gateway is one class; Cyta (Cyprus) ships today. Every send attempt is logged
+  regardless of outcome, and a salon can send itself a real test message from Settings.
+- **Z-Report** — end-of-day cash/card reconciliation; once closed, a day's payments
+  and appointments are locked against further edits.
+- **Onboarding wizard** — a new salon's owner is walked through salon details, VAT,
+  opening hours, SMS, and receipt branding on first login. Skippable, and everything
+  set there stays editable in Settings afterward.
+- **Platform admin** — a super-admin manages every salon from one place, can create
+  additional super-admins, and can reset a salon's onboarding to force it through
+  setup again.
+
+## Tech stack
+
+- **Backend**: Laravel 11, PHP 8.2+, MySQL/MariaDB
+- **Auth**: Laravel Sanctum (token-ready for a future mobile/API client)
+- **Frontend**: Tailwind CSS (a small custom design system, not a component
+  library), Alpine.js, FullCalendar, Flatpickr — built with Vite
+- **PDF**: barryvdh/laravel-dompdf
+- **Roles**: spatie/laravel-permission
+
+## Getting started (local development)
+
+```bash
+git clone git@github.com:petranpap/salomCRM.git
+cd salomCRM
+composer install
+npm install
+
+cp .env.example .env
+php artisan key:generate
+# Edit .env: set DB_* to a real MySQL/MariaDB database
+
+php artisan migrate
+php artisan storage:link   # needed for salon logo uploads to display
+
+npm run build               # or `npm run dev` while actively working on JS/CSS
+php artisan serve
+```
+
+### First-time setup
+
+There's no public sign-up — every account is created by an administrator.
+
+1. **Create your own platform admin account:**
+   ```bash
+   php artisan make:superadmin
    ```
-   git clone <repository-url>
-   cd salon-manager
-   ```
+2. Log in, go to **Platform Admin → Salons → New Salon**, then **Staff → New Staff**
+   to create that salon's owner account (pick a temporary password — they'll be
+   asked to set their own on first login).
+3. Hand the owner their temporary password. On first login they'll be walked
+   through the onboarding wizard (salon details, VAT, opening hours, SMS, branding)
+   before reaching the dashboard.
 
-2. **Install dependencies**:
-   ```
-   composer install
-   npm install
-   ```
+See `Fixes.md` for the full history of fixes and design decisions behind the current
+behavior, and `docs/` for architecture and deployment notes.
 
-3. **Set up the environment**:
-   - Copy the `.env.example` file to `.env` and configure your database and other settings.
-   ```
-   cp .env.example .env
-   ```
+## Running tests
 
-4. **Generate application key**:
-   ```
-   php artisan key:generate
-   ```
+```bash
+php artisan test
+```
 
-5. **Run migrations**:
-   ```
-   php artisan migrate
-   ```
+Tests run against an in-memory SQLite database (see `phpunit.xml`) — no separate test
+database setup needed.
 
-6. **Seed the database** (optional):
-   ```
-   php artisan db:seed
-   ```
+## CI/CD
 
-7. **Run the application**:
-   ```
-   php artisan serve
-   ```
-
-## Usage
-
-- Access the application at `http://localhost:8000`.
-- Use the provided authentication system to log in or register.
-- Navigate through the dashboard to manage appointments, customers, products, and tasks.
-
-## Technologies Used
-
-- **Backend**: Laravel 11, PHP 8.2
-- **Database**: MySQL/MariaDB
-- **Frontend**: TailwindCSS, DaisyUI, Heroicons
-- **Image Handling**: Spatie Laravel Medialibrary
-- **Task Scheduling**: Laravel Scheduler
-
-## Contributing
-
-Contributions are welcome! Please fork the repository and submit a pull request for any enhancements or bug fixes.
+`.github/workflows/ci-cd.yml` runs the full test suite on every push and pull
+request, and deploys to a VPS over SSH on a successful push to `main`. See
+`docs/DEPLOY.md` for what that needs to be configured.
 
 ## License
 
-This project is licensed under the MIT License. See the LICENSE file for more details.
-
-## Documentation
-
-For detailed documentation on architecture, deployment, and multi-tenancy setup, please refer to the `docs` directory.
+Proprietary — all rights reserved.

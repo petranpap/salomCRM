@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'welcome' => 'Καλώς ήρθατε στο Salon Manager',
+    'welcome' => 'Καλώς ήρθατε στο Studio Kassandra',
     'appointments' => 'Ραντεβού',
     'customers' => 'Πελάτες',
     'products' => 'Προϊόντα',

@@ -1,9 +1,9 @@
 {
-    "name": "laravel/laravel",
+    "name": "petranpap/studio-kassandra",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
-    "license": "MIT",
+    "description": "Studio Kassandra — multi-tenant salon management platform for Cyprus salons.",
+    "keywords": ["laravel", "salon", "crm", "appointments"],
+    "license": "proprietary",
     "require": {
         "php": "^8.2",
         "barryvdh/laravel-dompdf": "^3.1",

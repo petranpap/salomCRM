@@ -1,7 +1,7 @@
 {
-    "name": "salon-manager",
+    "name": "studio-kassandra",
     "version": "1.0.0",
-    "description": "A modern salon management web application.",
+    "description": "Studio Kassandra — salon management, done right.",
     "scripts": {
         "dev": "vite",
         "build": "vite build"
