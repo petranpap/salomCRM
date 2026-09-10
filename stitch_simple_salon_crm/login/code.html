@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login — Salon CRM</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode: ["class", "[data-theme='dark']"],
+  theme: { extend: {
+    fontFamily: {
+      display: ["DM Serif Display", "serif"],
+      body:    ["DM Sans", "sans-serif"],
+      mono:    ["JetBrains Mono", "monospace"],
+    },
+  }},
+}
+</script>
+
+<style>
+  /* ── DESIGN.md CSS variables ── */
+  :root {
+    --accent:           #B5836A;
+    --accent-light:     #F5EDE8;
+    --accent-hover:     #8C5E4A;
+    --accent-alt:       #7A9E87;
+    --accent-alt-light: #EAF1EC;
+    --bg:               #FDFAF7;
+    --bg-soft:          #F5F0EB;
+    --bg-card:          #FFFFFF;
+    --text:             #2C2218;
+    --text-muted:       #7A6E65;
+    --text-subtle:      #ADA49B;
+    --border:           #E8E0D8;
+    --border-soft:      #F0EBE4;
+    --badge-bg:         #EDE8E2;
+    --badge-text:       #5C5248;
+    --shadow-card:      0 2px 8px rgba(44,34,24,0.07);
+    --shadow-modal:     0 10px 40px -10px rgba(44,34,24,0.12);
+    --shadow-btn:       0 3px 8px rgba(181,131,106,0.25);
+    --radius:           10px;
+    --radius-lg:        16px;
+    --transition:       0.2s ease;
+  }
+
+  html[data-theme="dark"] {
+    --bg:               #1A1512;
+    --bg-soft:          #221D19;
+    --bg-card:          #2A2420;
+    --text:             #F5EFE9;
+    --text-muted:       #ADA49B;
+    --border:           #3A322C;
+    --border-soft:      #2E2822;
+    --badge-bg:         #2E2822;
+    --accent:           #D4A088;
+    --accent-light:     #2E201A;
+    --accent-alt:       #96BBA3;
+    --accent-alt-light: #1A2820;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: stretch;
+    overflow: hidden;
+  }
+
+  /* ── Card shadow ── */
+  .silk-shadow { box-shadow: var(--shadow-modal); }
+
+  /* ── Role tabs ── */
+  .role-tab {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border-radius: 8px;
+    padding: 8px 12px;
+    transition: all var(--transition);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    flex: 1;
+  }
+  .role-tab.active-tab {
+    background-color: var(--bg-card);
+    box-shadow: var(--shadow-card);
+    color: var(--accent);
+  }
+
+  /* ── Inputs ── */
+  .crm-input {
+    width: 100%;
+    height: 52px;
+    padding: 0 16px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--bg);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--text);
+    transition: border-color var(--transition), box-shadow var(--transition);
+    outline: none;
+    display: block;
+  }
+  .crm-input::placeholder { color: var(--text-subtle); }
+  .crm-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(181,131,106,0.15);
+  }
+
+  /* ── Primary button ── */
+  .btn-primary {
+    width: 100%;
+    height: 52px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: var(--shadow-btn);
+    transition: background-color var(--transition), transform var(--transition);
+  }
+  .btn-primary:hover  { background-color: var(--accent-hover); }
+  .btn-primary:active { transform: scale(0.98); }
+
+  /* ── Field label ── */
+  .field-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--text-subtle);
+    margin-left: 4px;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  /* ── Links ── */
+  .crm-link {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color var(--transition);
+  }
+  .crm-link:hover { color: var(--accent); text-decoration: underline; }
+  .crm-link-accent {
+    color: var(--accent);
+    font-weight: 600;
+    margin-left: 4px;
+    text-decoration: none;
+    transition: opacity var(--transition);
+  }
+  .crm-link-accent:hover { text-decoration: underline; }
+
+  /* ── Icon button ── */
+  .icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    transition: color var(--transition);
+  }
+  .icon-btn:hover { color: var(--accent); }
+</style>
+</head>
+
+<body>
+
+<!-- Left Side: Hero Image -->
+<section class="hidden md:flex md:w-1/2 relative overflow-hidden">
+  <img
+    alt="Sophisticated Salon Interior"
+    class="absolute inset-0 w-full h-full object-cover"
+    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAEv6w-TM1cY3oAXc48PHIoAIiagc4yyJfcRC96yaZ8UvgKgpWLaJ_K8R7zSBdZT9X8sRrU4lX1UJQuqEcpgcNchVSozKbex262720JGz2gnAv65p9PUAek0uqToGWvfAVqQcf_PrjCwD9IFpI2ctL85zJWxpdw_TpcuMGQBAiIOihquS3uGvuGLl5VHvY2TrE5Jno0Aew7HSW4wVOmlicnxtgld4YzO1ITr3jZ-rVchEJ0EWHqNhiNrA07wY6v83mM70XbPfhzoN6"
+    onerror="this.style.background='var(--bg-soft)'; this.style.opacity='0.4';"
+  />
+  <div class="absolute inset-0" style="background: linear-gradient(to right, rgba(0,0,0,0.08), transparent);"></div>
+</section>
+
+<!-- Right Side: Login Panel -->
+<main class="w-full md:w-1/2 flex items-center justify-center" style="padding: 16px; background: var(--bg);">
+
+  <!-- Login Card -->
+  <div class="silk-shadow w-full flex flex-col items-center"
+       style="max-width: 420px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 48px;">
+
+    <!-- App Name -->
+    <h1 style="font-family: 'DM Serif Display', serif; font-size: clamp(1.6rem, 3vw, 2.2rem); letter-spacing: -0.025em; line-height: 1.2; color: var(--accent); margin-bottom: 32px;">
+      Radiance Salon
+    </h1>
+
+    <!-- Role Selector Tabs -->
+    <div class="w-full flex mb-8 p-1 rounded-lg" style="background: var(--bg-soft);">
+      <button class="role-tab active-tab" onclick="selectRole('Manager', this)">Manager</button>
+      <button class="role-tab" onclick="selectRole('Receptionist', this)">Receptionist</button>
+      <button class="role-tab" onclick="selectRole('Technician', this)">Technician</button>
+    </div>
+
+    <!-- Login Form -->
+    <form class="w-full" style="display: flex; flex-direction: column; gap: 16px;" onsubmit="return false;">
+
+      <!-- Email -->
+      <div>
+        <label class="field-label">Email Address</label>
+        <input type="email" placeholder="Enter your email" class="crm-input" />
+      </div>
+
+      <!-- Password -->
+      <div>
+        <label class="field-label">Password</label>
+        <div class="relative">
+          <input type="password" placeholder="••••••••" class="crm-input" style="padding-right: 48px;" />
+          <button
+            type="button"
+            class="icon-btn absolute right-4 top-1/2 -translate-y-1/2"
+            aria-label="Toggle password visibility">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0, 'wght' 300; font-size: 20px;">visibility</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Remember Me -->
+      <div class="flex items-center justify-between" style="padding: 4px 0 8px;">
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" class="w-5 h-5 rounded" style="border-color: var(--border); accent-color: var(--accent);" />
+          <span class="crm-link" style="cursor: pointer;">Keep me signed in</span>
+        </label>
+      </div>
+
+      <!-- Sign In Button -->
+      <button type="submit" class="btn-primary">Sign In</button>
+
+      <!-- Forgot Password -->
+      <div class="text-center" style="padding-top: 8px;">
+        <a href="#" class="crm-link">Forgot password?</a>
+      </div>
+
+    </form>
+
+    <!-- Support Footer -->
+    <div class="w-full text-center" style="margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border-soft);">
+      <p style="font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--text-muted);">
+        Need technical assistance?
+        <a href="#" class="crm-link-accent">Contact Support</a>
+      </p>
+    </div>
+
+  </div>
+
+  <!-- Decorative background element -->
+  <div class="fixed bottom-0 right-0 pointer-events-none" style="padding: 40px; opacity: 0.08;">
+    <span class="material-symbols-outlined" style="font-size: 120px; color: var(--accent);">spa</span>
+  </div>
+
+</main>
+
+<script>
+  function selectRole(role, element) {
+    // Remove active classes from all tabs
+    const tabs = document.querySelectorAll('.role-tab');
+    tabs.forEach(tab => {
+      tab.classList.remove('active-tab');
+    });
+
+    // Add active class to clicked tab
+    element.classList.add('active-tab');
+
+    console.log("Selected role:", role);
+  }
+
+  // Subtle parallax effect on hero image
+  const hero = document.querySelector('section img');
+  if (hero) {
+    document.addEventListener('mousemove', (e) => {
+      const x = (e.clientX - window.innerWidth / 2) / 100;
+      const y = (e.clientY - window.innerHeight / 2) / 100;
+      hero.style.transform = `scale(1.05) translate(${x}px, ${y}px)`;
+    });
+  }
+</script>
+
+</body>
+</html>

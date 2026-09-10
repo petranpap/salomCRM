@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Salon CRM — Manager Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+<script id="tailwind-config">
+tailwind.config = {
+  darkMode: ["class", "[data-theme='dark']"],
+  theme: { extend: {
+    fontFamily: {
+      display: ["DM Serif Display", "serif"],
+      body:    ["DM Sans", "sans-serif"],
+      mono:    ["JetBrains Mono", "monospace"],
+    },
+  }},
+}
+</script>
+
+<style>
+  /* ── DESIGN.md CSS variables ── */
+  :root {
+    --accent:           #B5836A;
+    --accent-light:     #F5EDE8;
+    --accent-hover:     #8C5E4A;
+    --accent-alt:       #7A9E87;
+    --accent-alt-light: #EAF1EC;
+    --bg:               #FDFAF7;
+    --bg-soft:          #F5F0EB;
+    --bg-card:          #FFFFFF;
+    --text:             #2C2218;
+    --text-muted:       #7A6E65;
+    --text-subtle:      #ADA49B;
+    --border:           #E8E0D8;
+    --border-soft:      #F0EBE4;
+    --badge-bg:         #EDE8E2;
+    --badge-text:       #5C5248;
+    --success:          #5A8F6B;
+    --warning:          #C9863A;
+    --danger:           #B05252;
+    --info:             #5A7FA8;
+    --shadow-card:      0 2px 8px rgba(44,34,24,0.07);
+    --shadow-modal:     0 4px 20px -2px rgba(44,34,24,0.08);
+    --shadow-btn:       0 3px 8px rgba(181,131,106,0.25);
+    --radius:           10px;
+    --radius-lg:        16px;
+    --transition:       0.2s ease;
+  }
+
+  html[data-theme="dark"] {
+    --bg:               #1A1512;
+    --bg-soft:          #221D19;
+    --bg-card:          #2A2420;
+    --text:             #F5EFE9;
+    --text-muted:       #ADA49B;
+    --border:           #3A322C;
+    --border-soft:      #2E2822;
+    --badge-bg:         #2E2822;
+    --accent:           #D4A088;
+    --accent-light:     #2E201A;
+    --accent-alt:       #96BBA3;
+    --accent-alt-light: #1A2820;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow: hidden;
+    display: flex;
+    height: 100vh;
+  }
+
+  /* ── Material icons variation ── */
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+
+  /* ── Silk shadow ── */
+  .silk-shadow { box-shadow: var(--shadow-modal); }
+
+  /* ── Scrollbar ── */
+  .custom-scrollbar::-webkit-scrollbar        { width: 4px; height: 4px; }
+  .custom-scrollbar::-webkit-scrollbar-track  { background: transparent; }
+  .custom-scrollbar::-webkit-scrollbar-thumb  { background: var(--border); border-radius: 10px; }
+
+  /* ── Timeline grid ── */
+  .timeline-grid {
+    display: grid;
+    grid-template-columns: 120px repeat(18, minmax(60px, 1fr));
+  }
+
+  /* ── Sidebar nav link ── */
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    transition: background-color var(--transition), color var(--transition);
+  }
+  .nav-link:hover {
+    background-color: var(--bg-soft);
+    color: var(--text);
+  }
+  .nav-link.active {
+    background-color: var(--accent-light);
+    color: var(--accent);
+    border-left: 4px solid var(--accent);
+    padding-left: 20px;
+  }
+
+  /* ── Stat card ── */
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+  }
+
+  /* ── Stat label ── */
+  .stat-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  /* ── Stat value ── */
+  .stat-value {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.8rem, 2.5vw, 2.8rem);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--accent);
+  }
+
+  /* ── Primary action button ── */
+  .btn-action-primary {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-lg);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    box-shadow: var(--shadow-btn);
+    transition: opacity var(--transition), transform var(--transition);
+  }
+  .btn-action-primary:hover { opacity: 0.9; }
+  .btn-action-primary .material-symbols-outlined {
+    transition: transform var(--transition);
+  }
+  .btn-action-primary:hover .material-symbols-outlined { transform: translateX(4px); }
+
+  /* ── Secondary action button ── */
+  .btn-action-secondary {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    background: var(--accent-light);
+    color: var(--accent);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background-color var(--transition);
+  }
+  .btn-action-secondary:hover { background-color: var(--bg-soft); }
+  .btn-action-secondary .material-symbols-outlined {
+    transition: transform var(--transition);
+  }
+  .btn-action-secondary:hover .material-symbols-outlined { transform: translateX(4px); }
+
+  /* ── Search input ── */
+  .search-input {
+    width: 100%;
+    padding: 6px 16px 6px 40px;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: border-color var(--transition), box-shadow var(--transition);
+  }
+  .search-input::placeholder { color: var(--text-subtle); }
+  .search-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(181,131,106,0.12);
+  }
+
+  /* ── Table header ── */
+  .table-th {
+    padding: 12px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    background: var(--bg-soft);
+  }
+
+  /* ── Table row ── */
+  .table-row-even { background: var(--bg-card); }
+  .table-row-odd  { background: var(--bg-soft); }
+  .table-row-even:hover,
+  .table-row-odd:hover  { background: var(--bg-soft); transition: background var(--transition); }
+
+  /* ── Section heading (inside cards) ── */
+  .card-heading {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.2rem;
+    letter-spacing: -0.02em;
+    color: var(--accent);
+  }
+
+  /* ── AI insight box ── */
+  .insight-box {
+    padding: 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+  }
+
+  /* ── Icon button (top nav) ── */
+  .icon-btn-nav {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    transition: color var(--transition);
+    font-size: 22px;
+  }
+  .icon-btn-nav:hover  { color: var(--accent); }
+  .icon-btn-nav:active { opacity: 0.7; }
+</style>
+</head>
+
+<body>
+
+<!-- ── Sidebar ── -->
+<aside class="flex flex-col h-full sticky left-0 top-0 z-40 transition-all duration-200"
+       style="width: 220px; background: var(--bg-card); border-right: 1px solid var(--border);">
+
+  <!-- Logo -->
+  <div style="padding: 24px;">
+    <h1 style="font-family: 'DM Serif Display', serif; font-size: 1.35rem; letter-spacing: -0.02em; color: var(--accent);">
+      Lumière Salon
+    </h1>
+    <p style="font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-subtle); margin-top: 2px;">
+      Manager Portal
+    </p>
+  </div>
+
+  <!-- Nav -->
+  <nav class="flex-1 overflow-y-auto" style="margin-top: 8px;">
+    <a class="nav-link active" href="#">
+      <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+      <span>Dashboard</span>
+    </a>
+    <a class="nav-link" href="#">
+      <span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+      <span>Calendar</span>
+    </a>
+    <a class="nav-link" href="#">
+      <span class="material-symbols-outlined" data-icon="group">group</span>
+      <span>Clients</span>
+    </a>
+    <a class="nav-link" href="#">
+      <span class="material-symbols-outlined" data-icon="content_cut">content_cut</span>
+      <span>Staff</span>
+    </a>
+    <a class="nav-link" href="#">
+      <span class="material-symbols-outlined" data-icon="dry_cleaning">dry_cleaning</span>
+      <span>Services</span>
+    </a>
+    <a class="nav-link" href="#">
+      <span class="material-symbols-outlined" data-icon="payments">payments</span>
+      <span>Payments</span>
+    </a>
+    <a class="nav-link" href="#">
+      <span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+      <span>Z Report</span>
+    </a>
+    <a class="nav-link" href="#">
+      <span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+      <span>Analytics</span>
+    </a>
+    <a class="nav-link" href="#">
+      <span class="material-symbols-outlined" data-icon="settings">settings</span>
+      <span>Settings</span>
+    </a>
+  </nav>
+
+  <!-- User profile -->
+  <div style="padding: 16px; margin-top: auto; border-top: 1px solid var(--border);">
+    <div class="flex items-center gap-2">
+      <img
+        alt="Salon Manager Avatar"
+        class="rounded-full object-cover"
+        style="width: 40px; height: 40px; border: 2px solid var(--border);"
+        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdhA3uQnRZYfaBxFiOpzwCJTDTWEbLKiunweBuakkGpoDYl827XMEdeibqy0KYC6xY8NUwOeYp4Xex2r2c7fRBtmIy0lSu0rZhghgVKOxjrcWnyLU2Ya5GxJqZOqJsot3xAj8djfHK3UGD2fus6KSCS6hLrc5usIVPTJPuovf9LGUme-WzeW7bDR5rt_eHCVxFRZiWKvaK9MC7kxoBFvYTu6DhM4f977wrshWuOHg48y4_ntw77fFyNtfNwACgnbvJTsCduVWWJ6tx"
+        onerror="this.style.background='var(--bg-soft)'"
+      />
+      <div>
+        <p style="font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: var(--text);">Adrienne L.</p>
+        <p style="font-family: 'DM Sans', sans-serif; font-size: 11px; color: var(--text-subtle);">Admin</p>
+      </div>
+    </div>
+  </div>
+
+</aside>
+
+<!-- ── Main area ── -->
+<div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+
+  <!-- Top nav bar -->
+  <header class="w-full sticky top-0 z-30 flex justify-between items-center"
+          style="height: 64px; padding: 0 40px; background: var(--bg); border-bottom: 1px solid var(--border-soft);">
+    <div class="flex items-center gap-6">
+      <h2 style="font-family: 'DM Serif Display', serif; font-size: 1.3rem; letter-spacing: -0.02em; color: var(--accent);">
+        Lumière CRM
+      </h2>
+      <div class="relative" style="width: 256px;">
+        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2"
+              style="font-size: 18px; color: var(--text-muted);" data-icon="search">search</span>
+        <input type="text" placeholder="Search appointments…" class="search-input" />
+      </div>
+    </div>
+    <div class="flex items-center gap-4">
+      <button class="icon-btn-nav material-symbols-outlined" data-icon="notifications" aria-label="Notifications">notifications</button>
+      <button class="icon-btn-nav material-symbols-outlined" data-icon="help_outline" aria-label="Help">help_outline</button>
+    </div>
+  </header>
+
+  <!-- Scrollable content -->
+  <main class="flex-1 overflow-y-auto" style="padding: 40px; max-width: 1440px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 32px;">
+
+    <!-- ── Stat Cards ── -->
+    <section class="grid grid-cols-1 md:grid-cols-4 gap-6">
+
+      <!-- Revenue -->
+      <div class="stat-card silk-shadow">
+        <span class="stat-label">Today's Revenue</span>
+        <div class="flex items-baseline gap-2">
+          <span class="stat-value">$1,240</span>
+          <span style="font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 700; color: var(--success);">+12%</span>
+        </div>
+      </div>
+
+      <!-- Appointments -->
+      <div class="stat-card silk-shadow flex items-center justify-between">
+        <div>
+          <span class="stat-label">Appointments</span>
+          <p style="font-family: 'DM Serif Display', serif; font-size: 1.8rem; letter-spacing: -0.02em; color: var(--text);">18 / 24</p>
+        </div>
+        <div class="relative" style="width: 56px; height: 56px;">
+          <svg class="w-full h-full -rotate-90">
+            <circle cx="28" cy="28" fill="transparent" r="24" stroke="var(--border)" stroke-width="4"></circle>
+            <circle cx="28" cy="28" fill="transparent" r="24" stroke="var(--accent)" stroke-dasharray="150" stroke-dashoffset="37.5" stroke-width="4"></circle>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Active Staff -->
+      <div class="stat-card silk-shadow">
+        <span class="stat-label">Active Staff</span>
+        <div class="flex items-center gap-4">
+          <span class="stat-value">6</span>
+          <div class="flex -space-x-3">
+            <img class="rounded-full object-cover" style="width:32px;height:32px;border:2px solid var(--bg-card);"
+                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnhIaGGqrO6EJ6cTYuHwh601qpiOUBUpxM2-6lTVoUj0RP9sW0HmLpBWpPhbhkGoWr68B-Yytj1ASuvSF65h9YSqCn3Kqit9BevtDM4V3wmMCiMwGjgP0PKts857YA-7eva4qilVggV9Xe093FmzhMDvWy7A7cjFKAHt78CKXlUyY5U-aZF7Xz-bO_ok_4OyKY8QEiuTBBAW6MMr7zvuUaPh8HevA1VG02htvf92JdhRAvc0pk6XowDS4SfMfyRn6tdqXaZynVvLHF"
+                 alt="Staff member" onerror="this.style.background='var(--bg-soft)'" />
+            <img class="rounded-full object-cover" style="width:32px;height:32px;border:2px solid var(--bg-card);"
+                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuA92UgVWjalD12TyvPvi6oNnMOHtTiDGC-g_OWVPhvgY3pBWt_FXB45ZWfOTDpkQaaemeAWpnC5Co0d8qqdv6iKUDYK_BtJgMKcWMJMvEjcnFKdCGCQ5lw5-WgR7uMPuWUxPbtlC-69uZ-gjybo_6h68ApTXBmOZfMzqHaBxnyYwuq5WCgC4HyS4kP5JIhjU_oCRt-rFIZlHVHcls84ERCPQzBuBv2KeORCRk7V_-FFFq2BthfxX2f2KoC4BS67wx-wWYhhwKL1zYWc"
+                 alt="Staff member" onerror="this.style.background='var(--bg-soft)'" />
+            <img class="rounded-full object-cover" style="width:32px;height:32px;border:2px solid var(--bg-card);"
+                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3bgG4-Hw81wNEm0ZIfS7clUxUNsookFTxSpB24wb0tfQL2PCUxB6gtrbi2ec6gj1LXqHNmvuhVokOwHTT8A_iSxPv3jcxtH0QXQDo5PezvUM2jaX8VqnJI7jW1JfKUeDFjcX0iL-1gI7baThEL8HgwqHgH5-Kyl-I0pomZthMK1MqH2NyWzrENZhHIjMX1JvMOG_WrTw_Gk2eQ5Bx4dScSwT92wsuNXsLpFssBcTad_7pWgWnLj3jRW3eFwM8U8HPXAYl659DclyR"
+                 alt="Staff member" onerror="this.style.background='var(--bg-soft)'" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Pending Payments -->
+      <div class="stat-card silk-shadow flex items-center justify-between">
+        <div>
+          <span class="stat-label">Pending Payments</span>
+          <p style="font-family: 'DM Serif Display', serif; font-size: 1.8rem; letter-spacing: -0.02em; color: var(--text);">3</p>
+        </div>
+        <div class="p-2 rounded-lg" style="background: var(--accent-light);">
+          <span class="material-symbols-outlined" style="color: var(--warning);" data-icon="warning">warning</span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ── Timeline + Quick Actions ── -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- Timeline Swimlane -->
+      <div class="lg:col-span-9 overflow-hidden silk-shadow"
+           style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg);">
+
+        <!-- Timeline header -->
+        <div class="flex justify-between items-center" style="padding: 16px 24px; border-bottom: 1px solid var(--border); background: var(--bg-card);">
+          <h3 class="card-heading">Today's Appointment Timeline</h3>
+          <div class="flex gap-4">
+            <div class="flex items-center gap-1.5">
+              <span class="rounded-full" style="width:10px;height:10px;background:var(--accent);display:inline-block;"></span>
+              <span style="font-size:12px;color:var(--text-muted);">Hair</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="rounded-full" style="width:10px;height:10px;background:var(--accent-alt);display:inline-block;"></span>
+              <span style="font-size:12px;color:var(--text-muted);">Nails</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="rounded-full" style="width:10px;height:10px;background:var(--warning);display:inline-block;"></span>
+              <span style="font-size:12px;color:var(--text-muted);">Waxing</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Timeline grid -->
+        <div class="overflow-x-auto custom-scrollbar">
+          <div class="timeline-grid" style="min-width: 1000px;">
+
+            <!-- Time header -->
+            <div class="h-10 sticky left-0 z-10" style="background: var(--bg-soft); border-bottom: 1px solid var(--border);"></div>
+            <div class="h-10 flex items-center justify-center" style="border-bottom: 1px solid var(--border); font-family:'DM Sans',sans-serif; font-size:11px; font-weight:700; color:var(--text-muted);">09 AM</div>
+            <div class="h-10 flex items-center justify-center" style="border-bottom: 1px solid var(--border); font-family:'DM Sans',sans-serif; font-size:11px; font-weight:700; color:var(--text-muted);">10 AM</div>
+            <div class="h-10 flex items-center justify-center" style="border-bottom: 1px solid var(--border); font-family:'DM Sans',sans-serif; font-size:11px; font-weight:700; color:var(--text-muted);">11 AM</div>
+            <div class="h-10 flex items-center justify-center" style="border-bottom: 1px solid var(--border); font-family:'DM Sans',sans-serif; font-size:11px; font-weight:700; color:var(--text-muted);">12 PM</div>
+            <div class="h-10 flex items-center justify-center" style="border-bottom: 1px solid var(--border); font-family:'DM Sans',sans-serif; font-size:11px; font-weight:700; color:var(--text-muted);">01 PM</div>
+            <div class="h-10 flex items-center justify-center" style="border-bottom: 1px solid var(--border); font-family:'DM Sans',sans-serif; font-size:11px; font-weight:700; color:var(--text-muted);">02 PM</div>
+            <div class="h-10 flex items-center justify-center" style="border-bottom: 1px solid var(--border); font-family:'DM Sans',sans-serif; font-size:11px; font-weight:700; color:var(--text-muted);">03 PM</div>
+            <div class="h-10 flex items-center justify-center" style="border-bottom: 1px solid var(--border); font-family:'DM Sans',sans-serif; font-size:11px; font-weight:700; color:var(--text-muted);">04 PM</div>
+            <div class="h-10 flex items-center justify-center" style="border-bottom: 1px solid var(--border); font-family:'DM Sans',sans-serif; font-size:11px; font-weight:700; color:var(--text-muted);">05 PM</div>
+            <!-- 30-min half-slots -->
+            <div class="h-10" style="border-bottom: 1px solid var(--border);"></div><div class="h-10" style="border-bottom: 1px solid var(--border);"></div><div class="h-10" style="border-bottom: 1px solid var(--border);"></div><div class="h-10" style="border-bottom: 1px solid var(--border);"></div><div class="h-10" style="border-bottom: 1px solid var(--border);"></div><div class="h-10" style="border-bottom: 1px solid var(--border);"></div><div class="h-10" style="border-bottom: 1px solid var(--border);"></div><div class="h-10" style="border-bottom: 1px solid var(--border);"></div><div class="h-10" style="border-bottom: 1px solid var(--border);"></div>
+
+            <!-- Sarah -->
+            <div class="p-2 sticky left-0 z-10 flex flex-col" style="border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--bg-card); font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; color:var(--text);">
+              Sarah <span style="font-size:10px; color:var(--text-subtle); font-weight:400;">Senior Stylist</span>
+            </div>
+            <div class="relative border-b col-span-18" style="border-color: var(--border);">
+              <div class="absolute top-2 bottom-2 text-white rounded overflow-hidden whitespace-nowrap" style="left:10%;width:15%;background:var(--accent);font-size:10px;padding:4px 6px;">Balayage - Elena K.</div>
+              <div class="absolute top-2 bottom-2 text-white rounded overflow-hidden" style="left:40%;width:10%;background:var(--accent);font-size:10px;padding:4px 6px;">Trim - Mike S.</div>
+            </div>
+
+            <!-- Michael -->
+            <div class="p-2 sticky left-0 z-10 flex flex-col" style="border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--bg-card); font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; color:var(--text);">
+              Michael <span style="font-size:10px; color:var(--text-subtle); font-weight:400;">Barber</span>
+            </div>
+            <div class="relative border-b col-span-18" style="border-color: var(--border);">
+              <div class="absolute top-2 bottom-2 text-white rounded overflow-hidden" style="left:5%;width:8%;background:var(--accent);font-size:10px;padding:4px 6px;">Beard Trim</div>
+              <div class="absolute top-2 bottom-2 text-white rounded overflow-hidden" style="left:20%;width:12%;background:var(--accent);font-size:10px;padding:4px 6px;">Faded Cut</div>
+            </div>
+
+            <!-- Elena -->
+            <div class="p-2 sticky left-0 z-10 flex flex-col" style="border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--bg-card); font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; color:var(--text);">
+              Elena <span style="font-size:10px; color:var(--text-subtle); font-weight:400;">Nail Artist</span>
+            </div>
+            <div class="relative border-b col-span-18" style="border-color: var(--border);">
+              <div class="absolute top-2 bottom-2 text-white rounded overflow-hidden" style="left:15%;width:20%;background:var(--accent-alt);font-size:10px;padding:4px 6px;">Gel Manicure - Ava</div>
+              <div class="absolute top-2 bottom-2 text-white rounded overflow-hidden" style="left:55%;width:15%;background:var(--accent-alt);font-size:10px;padding:4px 6px;">Pedicure</div>
+            </div>
+
+            <!-- David -->
+            <div class="p-2 sticky left-0 z-10 flex flex-col" style="border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--bg-card); font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; color:var(--text);">
+              David <span style="font-size:10px; color:var(--text-subtle); font-weight:400;">Esthetician</span>
+            </div>
+            <div class="relative border-b col-span-18" style="border-color: var(--border);">
+              <div class="absolute top-2 bottom-2 text-white rounded overflow-hidden" style="left:30%;width:12%;background:var(--warning);font-size:10px;padding:4px 6px;">Full Wax</div>
+            </div>
+
+            <!-- Chloe -->
+            <div class="p-2 sticky left-0 z-10 flex flex-col" style="border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--bg-card); font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; color:var(--text);">
+              Chloe <span style="font-size:10px; color:var(--text-subtle); font-weight:400;">Stylist</span>
+            </div>
+            <div class="relative border-b col-span-18" style="border-color: var(--border);">
+              <div class="absolute top-2 bottom-2 text-white rounded overflow-hidden" style="left:65%;width:18%;background:var(--accent);font-size:10px;padding:4px 6px;">Wash &amp; Blow</div>
+            </div>
+
+            <!-- James -->
+            <div class="p-2 sticky left-0 z-10 flex flex-col" style="border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--bg-card); font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; color:var(--text);">
+              James <span style="font-size:10px; color:var(--text-subtle); font-weight:400;">Junior</span>
+            </div>
+            <div class="relative border-b col-span-18" style="border-color: var(--border);"></div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions sidebar -->
+      <div class="lg:col-span-3 flex flex-col gap-4">
+        <p style="font-family:'DM Sans',sans-serif; font-size:12px; font-weight:600; letter-spacing:0.10em; text-transform:uppercase; color:var(--text-muted); padding: 0 4px;">Quick Actions</p>
+
+        <button class="btn-action-primary silk-shadow">
+          <span>New Booking</span>
+          <span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+        </button>
+
+        <button class="btn-action-primary silk-shadow">
+          <span>New Payment</span>
+          <span class="material-symbols-outlined" data-icon="payments">payments</span>
+        </button>
+
+        <button class="btn-action-secondary silk-shadow">
+          <span>View Z Report</span>
+          <span class="material-symbols-outlined" data-icon="bar_chart">bar_chart</span>
+        </button>
+
+        <!-- AI Insight card -->
+        <div class="insight-box" style="margin-top: 8px;">
+          <div class="flex items-center gap-2" style="margin-bottom: 8px;">
+            <span class="material-symbols-outlined" style="color: var(--accent); font-size:20px;" data-icon="auto_awesome">auto_awesome</span>
+            <span style="font-family:'DM Sans',sans-serif; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-muted);">AI Insight</span>
+          </div>
+          <p style="font-family:'DM Sans',sans-serif; font-size:12px; font-style:italic; color:var(--text-muted); line-height:1.6;">
+            "Appointments are 85% full for tomorrow. Consider promoting Michael's morning slots."
+          </p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ── Recent Payments ── -->
+    <section class="overflow-hidden silk-shadow"
+             style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg);">
+
+      <div class="flex justify-between items-center" style="padding: 16px 24px; border-bottom: 1px solid var(--border); background: var(--bg-card);">
+        <h3 class="card-heading">Recent Payments</h3>
+        <button style="font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; color:var(--accent); background:none; border:none; cursor:pointer; transition:opacity var(--transition);"
+                onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">
+          View All Transactions
+        </button>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left">
+          <thead>
+            <tr>
+              <th class="table-th">Client</th>
+              <th class="table-th">Service</th>
+              <th class="table-th text-right">Amount</th>
+              <th class="table-th text-center">Method</th>
+              <th class="table-th text-right">Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Row 1 -->
+            <tr class="table-row-even">
+              <td style="padding:16px 24px;">
+                <div class="flex items-center gap-3">
+                  <img class="rounded-full object-cover" style="width:32px;height:32px;"
+                       src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLat1VMdhkKPch8YQ6qtx6HkZv_LAOrf_dw6cSKbeDd7r5EnLhEoUYAuprXos9DJ9Hdu41biDFxdr60SqnFP27lH26x8gzxpqRcwqtKMSMPVvrf_iWlH8kBTz3AtFbpq_azah-c6QChW_qDQRDe3zRZr-lvqG08aGS0VPqJKh-0UFJkhboj0BuSOvUEDTqhxjsOQIoZ0gy8IvF1M6mP_PjjFQZ26B5tAM3xsofLyxhU8eySatWOcO_nNaJNCOMPyMob-LIVDtDjodi"
+                       alt="Client" onerror="this.style.background='var(--bg-soft)'" />
+                  <span style="font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; color:var(--text);">Clara Thompson</span>
+                </div>
+              </td>
+              <td style="padding:16px 24px; font-family:'DM Sans',sans-serif; font-size:14px; color:var(--text-muted);">Full Hair Highlights</td>
+              <td style="padding:16px 24px; text-align:right; font-family:'JetBrains Mono',monospace; font-size:14px; font-weight:700; color:var(--text);">$185.00</td>
+              <td style="padding:16px 24px; text-align:center;">
+                <span class="material-symbols-outlined" style="color:var(--text-muted);" data-icon="credit_card">credit_card</span>
+              </td>
+              <td style="padding:16px 24px; text-align:right; font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-muted);">14:22</td>
+            </tr>
+            <!-- Row 2 -->
+            <tr class="table-row-odd">
+              <td style="padding:16px 24px;">
+                <div class="flex items-center gap-3">
+                  <img class="rounded-full object-cover" style="width:32px;height:32px;"
+                       src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9e1Eaw5oqMCENT-7zO_528Ic-ms1lyjyaHv4zDMOrIyllIDMr8Y292oOMs5_ijbaLcrYVEUB3gBh25WGA6gMItXLwbqTHwsF3aFFrMbAa7HYvcMRdFA_hC50uvGZSnM00jAKV9SL459QxfL5uNs6MBa7GHjl8UKMRfqGWYIKu9D-unLj4xkXxWwX8UfORJlIQwJ9vMTGhUGKctQnhc9-16RGAV2krMWFEH-Akf7T8vtAwatiN-yUpIhQPdVW-Ro3FWDSO1_R0jOsB"
+                       alt="Client" onerror="this.style.background='var(--bg-soft)'" />
+                  <span style="font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; color:var(--text);">Julian Rossi</span>
+                </div>
+              </td>
+              <td style="padding:16px 24px; font-family:'DM Sans',sans-serif; font-size:14px; color:var(--text-muted);">Men's Styling + Beard</td>
+              <td style="padding:16px 24px; text-align:right; font-family:'JetBrains Mono',monospace; font-size:14px; font-weight:700; color:var(--text);">$55.00</td>
+              <td style="padding:16px 24px; text-align:center;">
+                <span class="material-symbols-outlined" style="color:var(--text-muted);" data-icon="payments">payments</span>
+              </td>
+              <td style="padding:16px 24px; text-align:right; font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-muted);">13:58</td>
+            </tr>
+            <!-- Row 3 -->
+            <tr class="table-row-even">
+              <td style="padding:16px 24px;">
+                <div class="flex items-center gap-3">
+                  <img class="rounded-full object-cover" style="width:32px;height:32px;"
+                       src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEHm_-M2FiiLKxGss5LsXhlbmLlpfDu3cOLBRrFA-5Df95C13XkwcPuEJPA1TD0AbzUdJQGIj8QClm6qwKx7_U2Dt3_QGT6SUYIjJnVqEPZrqBvN2kSutMzRynwuKpjpfm-VMBCCr01_VrIhEznHfOZ2MEzIYKv4RaT1k4nUrOFcoQW5b26uJ7gVPTaY4suWtST6lrzlP98B8wZGcQKXFf494GWSkDuB6kO5xcc5xjLaSBRc7CwuQI2FDlB2QUCwcm4EorZF0sB_Kf"
+                       alt="Client" onerror="this.style.background='var(--bg-soft)'" />
+                  <span style="font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; color:var(--text);">Mia Reynolds</span>
+                </div>
+              </td>
+              <td style="padding:16px 24px; font-family:'DM Sans',sans-serif; font-size:14px; color:var(--text-muted);">Shellac Manicure</td>
+              <td style="padding:16px 24px; text-align:right; font-family:'JetBrains Mono',monospace; font-size:14px; font-weight:700; color:var(--text);">$45.00</td>
+              <td style="padding:16px 24px; text-align:center;">
+                <span class="material-symbols-outlined" style="color:var(--text-muted);" data-icon="credit_card">credit_card</span>
+              </td>
+              <td style="padding:16px 24px; text-align:right; font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-muted);">13:30</td>
+            </tr>
+            <!-- Row 4 -->
+            <tr class="table-row-odd">
+              <td style="padding:16px 24px;">
+                <div class="flex items-center gap-3">
+                  <img class="rounded-full object-cover" style="width:32px;height:32px;"
+                       src="https://lh3.googleusercontent.com/aida-public/AB6AXuByosvsUDbG1FX110x6V51y5wmXIFqORWKUj0lPNUqYeUmNCBW_-r4Nrz_HokIY4meFwYu0D-pvJN0qGFY9CZ03jppySKGoXOz4R0lfBVJfYdQzSh-k9OZY5RUwTbQbzfgS7O3C9G9E82J_IbkEQMsKGttFZ-MCO8Q9o8G1nD260k0w40-StWYGOVTi_ItdG6dcHQJwcYjFiR4GoMR5Bt55YpL5fQmMUkWRHprZXzRWyjE9_UsuX_e6HU_YtfEEAvh9SVz3lqak-56g"
+                       alt="Client" onerror="this.style.background='var(--bg-soft)'" />
+                  <span style="font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; color:var(--text);">Adam Fletcher</span>
+                </div>
+              </td>
+              <td style="padding:16px 24px; font-family:'DM Sans',sans-serif; font-size:14px; color:var(--text-muted);">Gentleman's Cut</td>
+              <td style="padding:16px 24px; text-align:right; font-family:'JetBrains Mono',monospace; font-size:14px; font-weight:700; color:var(--text);">$38.00</td>
+              <td style="padding:16px 24px; text-align:center;">
+                <span class="material-symbols-outlined" style="color:var(--text-muted);" data-icon="credit_card">credit_card</span>
+              </td>
+              <td style="padding:16px 24px; text-align:right; font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-muted);">12:15</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </section>
+
+  </main>
+</div>
+
+<script>
+  // Atmospheric card glow on hover
+  document.querySelectorAll('.silk-shadow').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.setProperty('--mouse-x', `${x}px`);
+      card.style.setProperty('--mouse-y', `${y}px`);
+    });
+  });
+
+  // Time indicator update (mock)
+  const timeline = document.querySelector('.timeline-grid');
+  if (timeline) {
+    // Logic to scroll to current time or highlight it could be added here
+    console.log("Dashboard view initialized.");
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lumière CRM - Z Report</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;family=DM+Serif+Display:ital@0;1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#4c463c",
+                    "inverse-surface": "#31302f",
+                    "on-secondary-container": "#686257",
+                    "error-container": "#ffdad6",
+                    "outline": "#83746d",
+                    "secondary": "#645d53",
+                    "primary": "#7d523c",
+                    "surface-container-high": "#eae8e5",
+                    "on-background": "#1b1c1a",
+                    "on-primary-fixed-variant": "#643d28",
+                    "surface-dim": "#dcdad7",
+                    "on-surface": "#1b1c1a",
+                    "on-primary-container": "#fffbff",
+                    "inverse-primary": "#f3ba9f",
+                    "surface-container-low": "#f6f3f0",
+                    "surface-variant": "#e5e2df",
+                    "background": "#fcf9f6",
+                    "on-tertiary-fixed-variant": "#504539",
+                    "surface-container-highest": "#e5e2df",
+                    "surface": "#fcf9f6",
+                    "secondary-fixed-dim": "#cfc5b9",
+                    "primary-container": "#986a52",
+                    "on-error-container": "#93000a",
+                    "secondary-container": "#e8ded1",
+                    "on-secondary-fixed": "#1f1b13",
+                    "on-primary": "#ffffff",
+                    "secondary-fixed": "#ebe1d4",
+                    "tertiary-fixed-dim": "#d5c4b4",
+                    "inverse-on-surface": "#f3f0ed",
+                    "outline-variant": "#d5c3bb",
+                    "tertiary-fixed": "#f2dfcf",
+                    "on-error": "#ffffff",
+                    "surface-tint": "#7f543e",
+                    "on-surface-variant": "#51443e",
+                    "primary-fixed-dim": "#f3ba9f",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-fixed": "#231a10",
+                    "on-secondary": "#ffffff",
+                    "tertiary-container": "#807264",
+                    "surface-container": "#f0edea",
+                    "error": "#ba1a1a",
+                    "surface-bright": "#fcf9f6",
+                    "primary-fixed": "#ffdbcb",
+                    "tertiary": "#675a4d",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-container": "#fffbff",
+                    "on-primary-fixed": "#311303"
+            },
+            "borderRadius": {
+                    "DEFAULT": "10px",
+                    "lg": "16px",
+                    "xl": "24px",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "lg": "32px",
+                    "xxl": "64px",
+                    "margin-mobile": "16px",
+                    "margin-desktop": "40px",
+                    "sm": "16px",
+                    "xl": "48px",
+                    "gutter": "24px",
+                    "base": "4px",
+                    "xs": "8px",
+                    "md": "24px"
+            },
+            "fontFamily": {
+                    "display-lg": ["DM Serif Display"],
+                    "label-sm": ["DM Sans"],
+                    "headline-md": ["DM Serif Display"],
+                    "body-lg": ["DM Sans"],
+                    "headline-lg-mobile": ["DM Serif Display"],
+                    "body-md": ["DM Sans"],
+                    "label-md": ["DM Sans"],
+                    "headline-lg": ["DM Serif Display"],
+                    "body-sm": ["DM Sans"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .silk-shadow {
+            box-shadow: 0 4px 20px -2px rgba(125, 82, 60, 0.08);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #E8DED1;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md flex min-h-screen">
+<!-- SideNavBar (Authority: JSON) -->
+<aside class="flex flex-col h-full w-[220px] h-screen sticky left-0 top-0 bg-surface border-r border-outline-variant shadow-sm z-40">
+<div class="px-md py-lg">
+<h1 class="font-display-lg text-headline-md text-primary">Lumière Salon</h1>
+<p class="font-body-sm text-on-surface-variant opacity-70">Manager Portal</p>
+</div>
+<nav class="flex-1 flex flex-col gap-base overflow-y-auto custom-scrollbar">
+<!-- Nav Item: Dashboard -->
+<a class="flex items-center gap-xs text-on-surface-variant px-md py-sm hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<!-- Nav Item: Calendar -->
+<a class="flex items-center gap-xs text-on-surface-variant px-md py-sm hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+<span class="font-body-md">Calendar</span>
+</a>
+<!-- Nav Item: Clients -->
+<a class="flex items-center gap-xs text-on-surface-variant px-md py-sm hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-body-md">Clients</span>
+</a>
+<!-- Nav Item: Staff -->
+<a class="flex items-center gap-xs text-on-surface-variant px-md py-sm hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="content_cut">content_cut</span>
+<span class="font-body-md">Staff</span>
+</a>
+<!-- Nav Item: Services -->
+<a class="flex items-center gap-xs text-on-surface-variant px-md py-sm hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dry_cleaning">dry_cleaning</span>
+<span class="font-body-md">Services</span>
+</a>
+<!-- Nav Item: Payments -->
+<a class="flex items-center gap-xs text-on-surface-variant px-md py-sm hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-body-md">Payments</span>
+</a>
+<!-- Nav Item: Z Report (Active) -->
+<a class="flex items-center gap-xs bg-secondary-container text-on-secondary-container border-l-4 border-primary px-md py-sm transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span class="font-body-md">Z Report</span>
+</a>
+<!-- Nav Item: Analytics -->
+<a class="flex items-center gap-xs text-on-surface-variant px-md py-sm hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-body-md">Analytics</span>
+</a>
+<!-- Nav Item: Settings -->
+<a class="flex items-center gap-xs text-on-surface-variant px-md py-sm hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-md">Settings</span>
+</a>
+</nav>
+<div class="p-md border-t border-outline-variant">
+<div class="flex items-center gap-xs">
+<img alt="Salon Manager Avatar" class="w-10 h-10 rounded-full object-cover border border-outline-variant" data-alt="A professional headshot of a boutique salon manager with a friendly expression. She is wearing a sophisticated linen blouse in a warm neutral tone. The background is a soft-focus minimalist salon interior with warm ambient lighting and terracotta accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkRmWygDeiZyvsFgbmHJbdl8lgZuDD9FM8wCcM8ALLLXG_YTCsugmLtyS2nqjt8PeugDjlSO6zFi72bncLlFb-xC2k-y2xJHCj75hU3WFdevcHNTXWBwrBREf33QPzzNpXj6ihEr7dMHCGoJ4dLUyp_3870wN_EUlDg6F9sFp93eKmTLstOKrpycbFbR5dyZqQIYiQslmesGCYyh9rDMCEMj4XqwZgJjZkR58W-9TrwVGaSlvLpQzXL-7jnfW2VgGEPR-q_y3G9pv4"/>
+<div class="overflow-hidden">
+<p class="font-label-md text-on-surface truncate">Sophie Laurent</p>
+<p class="text-label-sm text-on-surface-variant opacity-70">Salon Manager</p>
+</div>
+</div>
+</div>
+</aside>
+<main class="flex-1 flex flex-col min-w-0 bg-background">
+<!-- TopNavBar (Authority: JSON) -->
+<header class="w-full h-16 sticky top-0 z-30 bg-background flex justify-between items-center px-margin-desktop">
+<div class="flex items-center gap-md">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="bg-surface-container-low border border-outline-variant rounded-full py-2 pl-10 pr-4 text-body-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent w-64 transition-all" placeholder="Search report history..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<div class="flex gap-sm">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all cursor-pointer" data-icon="notifications">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all cursor-pointer" data-icon="help_outline">help_outline</button>
+</div>
+<div class="h-8 w-[1px] bg-outline-variant mx-xs"></div>
+<div class="flex items-center gap-xs cursor-pointer active:opacity-80">
+<span class="font-label-md text-on-surface-variant">Lumière CRM</span>
+</div>
+</div>
+</header>
+<!-- Content Area -->
+<div class="max-w-[1440px] w-full mx-auto p-margin-desktop space-y-lg">
+<!-- Page Header -->
+<div class="flex justify-between items-end">
+<div class="space-y-base">
+<h2 class="font-display-lg text-headline-lg text-primary">Z Report — Tuesday, October 24, 2024</h2>
+<p class="font-body-md text-on-surface-variant">Daily closing summary and performance breakdown</p>
+</div>
+<button class="bg-primary text-on-primary px-lg py-sm rounded-lg font-label-md silk-shadow hover:brightness-110 active:scale-95 transition-all">
+                    Close Day
+                </button>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Section 1: Total Revenue (Bento Main) -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container-lowest p-xl rounded-lg silk-shadow flex flex-col justify-between border border-outline-variant">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-md text-primary tracking-widest uppercase">Total Revenue</p>
+<h3 class="font-display-lg text-[64px] text-on-surface leading-tight mt-xs">$2,850.00</h3>
+</div>
+<div class="bg-secondary-container p-sm rounded-full">
+<span class="material-symbols-outlined text-primary text-[32px]" data-icon="trending_up">trending_up</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-md mt-xl">
+<div class="bg-surface-container-low p-md rounded-lg border border-outline-variant flex items-center gap-md">
+<div class="bg-white p-xs rounded-full silk-shadow">
+<span class="material-symbols-outlined text-on-secondary-container" data-icon="payments">payments</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant">Cash Revenue</p>
+<p class="font-headline-md text-on-surface">$850.00</p>
+</div>
+</div>
+<div class="bg-surface-container-low p-md rounded-lg border border-outline-variant flex items-center gap-md">
+<div class="bg-white p-xs rounded-full silk-shadow">
+<span class="material-symbols-outlined text-on-secondary-container" data-icon="credit_card">credit_card</span>
+</div>
+<div>
+<p class="text-label-sm text-on-surface-variant">Card Revenue</p>
+<p class="font-headline-md text-on-surface">$2,000.00</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 4: Tips Total (Callout Card) -->
+<div class="col-span-12 lg:col-span-4 bg-primary text-on-primary p-xl rounded-lg silk-shadow flex flex-col justify-center items-center text-center space-y-md border border-primary-container relative overflow-hidden">
+<!-- Subtle background decoration -->
+<div class="absolute -right-8 -top-8 w-32 h-32 bg-white/10 rounded-full"></div>
+<div class="absolute -left-4 -bottom-4 w-16 h-16 bg-white/5 rounded-full"></div>
+<span class="material-symbols-outlined text-[48px]" data-icon="volunteer_activism">volunteer_activism</span>
+<div>
+<h4 class="font-display-lg text-headline-lg">$350.00</h4>
+<p class="font-body-md opacity-90 mt-xs">Total Tips Today</p>
+</div>
+<div class="w-full h-[1px] bg-white/20"></div>
+<p class="font-label-sm tracking-wide">Excellent staff performance</p>
+</div>
+<!-- Section 2: Breakdown by Technician (Table) -->
+<div class="col-span-12 lg:col-span-7 bg-surface-container-lowest p-lg rounded-lg silk-shadow border border-outline-variant">
+<div class="flex items-center justify-between mb-lg">
+<h4 class="font-headline-md text-on-surface">Breakdown by Technician</h4>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="more_horiz">more_horiz</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant">
+<th class="pb-md font-label-md text-on-surface-variant uppercase tracking-wider">Technician</th>
+<th class="pb-md font-label-md text-on-surface-variant uppercase tracking-wider text-center">Appts</th>
+<th class="pb-md font-label-md text-on-surface-variant uppercase tracking-wider text-right">Revenue</th>
+<th class="pb-md font-label-md text-on-surface-variant uppercase tracking-wider text-right">Tips</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="group hover:bg-surface-container-low transition-colors">
+<td class="py-md flex items-center gap-sm">
+<img alt="Sarah" class="w-10 h-10 rounded-full object-cover" data-alt="A portrait of a professional hair stylist named Sarah, smiling warmly. She is in a high-end salon setting with warm terracotta and gold tones. The lighting is soft and flattering, emphasizing a premium and approachable atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMW3Bcphc99TZksGMP0PtLyRfVaba54lYnOj6QWBl0KYHz5VQjAyI5AKiCpsMeKxZVPI_QItenQXpJlfe7ff75j8dG-5tKdkt4d4PIRzYXvaZRbjif7d8-LTZqwNelj0_3qQKMCrOqDzm6BxHtatXPc2xfTFtQ_qZhcNWY1ohI1XlvyG5UirdujRc7RMBnvpiVCX4WUOdCngVTHM4EgXy22fYl7cCEX6sftlAdB2RUtq2_d9APqwKaNtik7ltNZAldpWx6xP1KYQe7"/>
+<span class="font-label-md text-on-surface">Sarah</span>
+</td>
+<td class="py-md text-center font-body-md">8</td>
+<td class="py-md text-right font-body-md font-bold">$1,200</td>
+<td class="py-md text-right font-body-md text-primary">$150</td>
+</tr>
+<tr class="group hover:bg-surface-container-low transition-colors">
+<td class="py-md flex items-center gap-sm">
+<img alt="Michael" class="w-10 h-10 rounded-full object-cover" data-alt="A portrait of Michael, a senior stylist at a luxury salon. He is dressed in a clean, modern black apron over a neutral shirt. The background is a clean white salon wall with a hint of warm stone textures. Professional and confident vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmaaXc6eRRx5P2pD6oN0vIDj5bt47Atugnsvvkv5EdtGxQEErJ5Heu3H2KQ57353sxaKh0nBnmbavYRiYkQMLhauY8_yI-RD-E3h-NXkKC9cRpyi2uSm0hHvkcYG8ox2adDs1sBwo5lCt2rHgG--QrzzsqYyRRxn-ytg20dphyqyFxzHSeQ51685BdVNEOR6MwrdiM2gYEtmi37Tx9XngbAmz7G7EFR1J2sJe0jLyujeVkHeEnYHPkq1Fii3mokyC0c0RENaQCfDZ5"/>
+<span class="font-label-md text-on-surface">Michael</span>
+</td>
+<td class="py-md text-center font-body-md">6</td>
+<td class="py-md text-right font-body-md font-bold">$900</td>
+<td class="py-md text-right font-body-md text-primary">$110</td>
+</tr>
+<tr class="group hover:bg-surface-container-low transition-colors">
+<td class="py-md flex items-center gap-sm">
+<img alt="Elena" class="w-10 h-10 rounded-full object-cover" data-alt="A close-up portrait of Elena, a spa specialist. She has a serene and professional expression, reflecting the calm environment of a boutique spa. Warm ambient lighting, soft neutral background, and high-quality photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaaK5lyLFPERSNb6sUThUVtpXJYH6OScwiyIWQ7IgR_ekgw3eOYghTVU4bHGJtsTP1DPYZAm-oaMClBU1s_LoPtFr3lgVY3o_iGmxmtMoLJZSbNGpshgS2LykD8luLKl59r67v1-AXvm22EfXyRhweplu1cke8T0gV_GGVMlaPUYqo6u7nNW8VtAuKpNTFvZeRwYmAAVRPpv9_fEd_iuuUkEjloH6-4RMS4670neUuNIqmPT3Sajsa-lh7EAiatZ2HPX7aUAnuRtmW"/>
+<span class="font-label-md text-on-surface">Elena</span>
+</td>
+<td class="py-md text-center font-body-md">4</td>
+<td class="py-md text-right font-body-md font-bold">$750</td>
+<td class="py-md text-right font-body-md text-primary">$90</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Section 3: Breakdown by Service Type (Chart) -->
+<div class="col-span-12 lg:col-span-5 bg-surface-container-lowest p-lg rounded-lg silk-shadow border border-outline-variant flex flex-col justify-between">
+<div>
+<h4 class="font-headline-md text-on-surface mb-lg">Breakdown by Service Type</h4>
+<div class="space-y-lg mt-md">
+<!-- Chart Item 1 -->
+<div class="space-y-xs">
+<div class="flex justify-between items-end">
+<span class="font-label-md text-on-surface">Hair</span>
+<span class="font-body-sm text-on-surface-variant">$1,800</span>
+</div>
+<div class="w-full h-3 bg-surface-container-low rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full transition-all duration-1000" style="width: 75%;"></div>
+</div>
+</div>
+<!-- Chart Item 2 -->
+<div class="space-y-xs">
+<div class="flex justify-between items-end">
+<span class="font-label-md text-on-surface">Nails</span>
+<span class="font-body-sm text-on-surface-variant">$650</span>
+</div>
+<div class="w-full h-3 bg-surface-container-low rounded-full overflow-hidden">
+<div class="h-full bg-[#8A9A8A] rounded-full transition-all duration-1000" style="width: 40%;"></div>
+</div>
+</div>
+<!-- Chart Item 3 -->
+<div class="space-y-xs">
+<div class="flex justify-between items-end">
+<span class="font-label-md text-on-surface">Waxing</span>
+<span class="font-body-sm text-on-surface-variant">$400</span>
+</div>
+<div class="w-full h-3 bg-surface-container-low rounded-full overflow-hidden">
+<div class="h-full bg-[#D4A373] rounded-full transition-all duration-1000" style="width: 25%;"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-lg pt-lg border-t border-outline-variant flex justify-around">
+<div class="text-center">
+<p class="font-label-sm text-on-surface-variant">Top Performer</p>
+<p class="font-label-md text-primary">Hair Care</p>
+</div>
+<div class="w-[1px] bg-outline-variant"></div>
+<div class="text-center">
+<p class="font-label-sm text-on-surface-variant">Avg Ticket</p>
+<p class="font-label-md text-primary">$158.33</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Buttons -->
+<footer class="flex justify-center items-center gap-md pt-lg border-t border-outline-variant">
+<button class="flex items-center gap-xs px-xl py-sm bg-surface-container-high border border-outline-variant text-on-surface rounded-lg font-label-md hover:bg-surface-container-highest transition-all">
+<span class="material-symbols-outlined" data-icon="print">print</span>
+                    Print Report
+                </button>
+<button class="flex items-center gap-xs px-xl py-sm bg-surface-container-high border border-outline-variant text-on-surface rounded-lg font-label-md hover:bg-surface-container-highest transition-all">
+<span class="material-symbols-outlined" data-icon="picture_as_pdf">picture_as_pdf</span>
+                    Export PDF
+                </button>
+</footer>
+</div>
+</main>
+<script>
+        // Micro-interactions for the "Close Day" button
+        document.querySelector('button.bg-primary').addEventListener('click', function() {
+            const btn = this;
+            const originalText = btn.innerText;
+            btn.innerText = 'Processing...';
+            btn.disabled = true;
+            btn.style.opacity = '0.7';
+            
+            setTimeout(() => {
+                btn.innerText = 'Day Closed Successfully';
+                btn.classList.replace('bg-primary', 'bg-on-tertiary-fixed-variant');
+                
+                // Atmospheric confetti effect (simplified)
+                for(let i=0; i<30; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.style.position = 'fixed';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.top = '-20px';
+                    confetti.style.width = '10px';
+                    confetti.style.height = '10px';
+                    confetti.style.backgroundColor = i % 2 === 0 ? '#B5836A' : '#E8DED1';
+                    confetti.style.borderRadius = '2px';
+                    confetti.style.zIndex = '9999';
+                    document.body.appendChild(confetti);
+                    
+                    const duration = Math.random() * 2 + 1;
+                    confetti.animate([
+                        { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+                        { transform: `translateY(100vh) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+                    ], {
+                        duration: duration * 1000,
+                        easing: 'linear'
+                    }).onfinish = () => confetti.remove();
+                }
+            }, 1500);
+        });
+
+        // Search bar focus effect
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('scale-105');
+            searchInput.parentElement.classList.add('shadow-md');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('scale-105');
+            searchInput.parentElement.classList.remove('shadow-md');
+        });
+    </script>
+</body></html>

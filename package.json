@@ -1,0 +1,28 @@
+{
+    "name": "salon-manager",
+    "version": "1.0.0",
+    "description": "A modern salon management web application.",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "dependencies": {
+        "@fullcalendar/core": "^6.1.10",
+        "@fullcalendar/daygrid": "^6.1.10",
+        "@fullcalendar/interaction": "^6.1.10",
+        "@fullcalendar/timegrid": "^6.1.10",
+        "alpinejs": "^3.13.3",
+        "axios": "^1.6.4",
+        "daisyui": "^4.7.2",
+        "filepond": "^4.30.6",
+        "flatpickr": "^4.6.13"
+    },
+    "devDependencies": {
+        "@tailwindcss/forms": "^0.5.7",
+        "autoprefixer": "^10.4.17",
+        "laravel-vite-plugin": "^1.0.0",
+        "postcss": "^8.4.35",
+        "tailwindcss": "^3.4.1",
+        "vite": "^5.0.0"
+    }
+}

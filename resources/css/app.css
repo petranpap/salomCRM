@@ -1,0 +1,174 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Serif+Display:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    html {
+        font-family: 'DM Sans', sans-serif;
+        color: #2C1F1A;
+        background-color: #F2EDE8;
+    }
+    html.dark {
+        color: #F5EDE8;
+        background-color: #1C1210;
+    }
+    h1, h2, h3 {
+        font-family: 'Playfair Display', serif;
+        letter-spacing: -0.02em;
+    }
+}
+
+@layer components {
+    .btn-primary {
+        @apply inline-flex items-center justify-center gap-1.5 bg-rose-sand text-white px-5 py-2.5 rounded-xl font-sans font-semibold text-sm transition-all hover:bg-rose-sand-hover active:scale-95 shadow-sm;
+    }
+    .btn-outline {
+        @apply inline-flex items-center justify-center gap-1.5 border-2 border-rose-sand text-rose-sand px-5 py-2.5 rounded-xl font-sans font-semibold text-sm transition-all hover:bg-rose-sand hover:text-white active:scale-95;
+    }
+    .btn-ghost {
+        @apply inline-flex items-center justify-center gap-1.5 text-espresso-muted px-4 py-2 rounded-xl font-sans font-medium text-sm transition-all hover:bg-cream-soft dark:hover:bg-cream-dark-soft hover:text-espresso dark:hover:text-cream;
+    }
+    .card {
+        @apply bg-white dark:bg-card-dark border border-border-warm dark:border-border-warm-dark rounded-2xl p-6 shadow-sm;
+    }
+    .card-hover {
+        @apply card transition-all hover:-translate-y-0.5 hover:shadow-md;
+    }
+    .input-field {
+        @apply w-full bg-cream-soft dark:bg-card-dark border border-border-warm dark:border-border-warm-dark rounded-xl px-4 py-3 text-sm text-espresso dark:text-cream focus:outline-none focus:ring-2 focus:ring-rose-sand/40 focus:border-rose-sand transition placeholder:text-espresso-muted/50;
+    }
+    .input-icon-wrap {
+        @apply relative;
+    }
+    .input-icon-wrap .input-field {
+        @apply pr-10;
+    }
+    .input-icon {
+        @apply absolute right-3 top-1/2 -translate-y-1/2 text-espresso-muted pointer-events-none w-4 h-4;
+    }
+    .badge {
+        @apply inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-mono font-semibold;
+    }
+    .status-booked    { @apply badge bg-rose-sand-light text-rose-sand; }
+    .status-confirmed { @apply badge bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400; }
+    .status-completed { @apply badge bg-emerald-100 text-emerald-800; }
+    .status-no-show   { @apply badge bg-amber-50 text-amber-700; }
+    .status-canceled  { @apply badge bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400; }
+    .section-label {
+        @apply text-xs font-semibold uppercase tracking-widest text-espresso-muted dark:text-espresso-muted mb-1;
+    }
+    .page-title {
+        @apply font-display text-3xl font-semibold text-espresso dark:text-cream;
+    }
+}
+
+[x-cloak] { display: none !important; }
+
+/* Browsers strip background colors from print by default — keep status badges,
+   colored cards, and progress bars visible on printed receipts/reports. */
+@media print {
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+}
+
+/* ── Terra & Silk: sidebar layout ── */
+.ts-sidebar {
+    background-color: #f6f3f0;
+    border-right: 1px solid #e5e2df;
+}
+.ts-nav-link {
+    @apply flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 text-ts-text-muted;
+}
+.ts-nav-link:hover {
+    @apply bg-ts-surface-mid text-ts-text;
+}
+.ts-nav-link.active {
+    @apply bg-ts-primary text-white shadow-sm;
+}
+.ts-stat-card {
+    @apply bg-ts-surface border border-ts-border-soft rounded-card-lg p-5 shadow-silk;
+}
+.ts-quick-action {
+    @apply flex items-center justify-between w-full px-5 py-4 rounded-xl font-medium text-sm transition-all duration-150 shadow-silk;
+}
+.ts-badge-flag-late    { @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-700; }
+.ts-badge-flag-noshow  { @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-700; }
+.ts-badge-flag-vip     { @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-700; }
+.ts-badge-flag-flagged { @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-orange-100 text-orange-700; }
+
+/* ── Flatpickr custom theme ── */
+.flatpickr-calendar {
+    font-family: 'DM Sans', sans-serif !important;
+    border: 1px solid #E8DDD8 !important;
+    border-radius: 16px !important;
+    box-shadow: 0 8px 32px rgba(44,31,26,0.10) !important;
+    padding: 6px !important;
+}
+.flatpickr-months .flatpickr-month,
+.flatpickr-current-month {
+    background: transparent !important;
+    color: #2C1F1A !important;
+}
+.flatpickr-current-month .flatpickr-monthDropdown-months,
+.flatpickr-current-month input.cur-year {
+    font-family: 'Playfair Display', serif !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    color: #2C1F1A !important;
+}
+.flatpickr-weekday {
+    font-size: 0.7rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.08em !important;
+    color: #8C7168 !important;
+    text-transform: uppercase !important;
+}
+.flatpickr-day {
+    border-radius: 10px !important;
+    color: #2C1F1A !important;
+    font-size: 0.85rem !important;
+}
+.flatpickr-day:hover {
+    background: #F3E3DC !important;
+    border-color: transparent !important;
+    color: #C9907A !important;
+}
+.flatpickr-day.selected,
+.flatpickr-day.selected:hover {
+    background: #C9907A !important;
+    border-color: #C9907A !important;
+    color: #fff !important;
+}
+.flatpickr-day.today {
+    border-color: #C9907A !important;
+    color: #C9907A !important;
+    font-weight: 600 !important;
+}
+.flatpickr-day.today.selected { color: #fff !important; }
+.flatpickr-prev-month svg, .flatpickr-next-month svg { fill: #8C7168 !important; }
+.flatpickr-prev-month:hover svg, .flatpickr-next-month:hover svg { fill: #C9907A !important; }
+.flatpickr-time input { font-family: 'JetBrains Mono', monospace !important; color: #2C1F1A !important; }
+.flatpickr-time .flatpickr-time-separator { color: #8C7168 !important; }
+.numInputWrapper:hover { background: #F3E3DC !important; }
+/* Alt input styling — looks like our input-field */
+.flatpickr-input.flatpickr-input.form-control,
+input.flatpickr-input[readonly] {
+    cursor: pointer !important;
+}
+
+/* FullCalendar theme overrides */
+.fc .fc-toolbar-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #2C1F1A; }
+.dark .fc .fc-toolbar-title { color: #F5EDE8; }
+.fc .fc-button-primary { background-color: #C9907A !important; border-color: #C9907A !important; border-radius: 10px !important; font-family: 'DM Sans', sans-serif !important; font-size: 0.8rem !important; }
+.fc .fc-button-primary:hover { background-color: #A5705C !important; border-color: #A5705C !important; }
+.fc .fc-button-primary:not(:disabled).fc-button-active { background-color: #A5705C !important; border-color: #A5705C !important; }
+.fc-theme-standard td, .fc-theme-standard th { border-color: #E8DDD8; }
+.dark .fc-theme-standard td, .dark .fc-theme-standard th { border-color: #3D2820; }
+.fc .fc-daygrid-day-number, .fc .fc-col-header-cell-cushion { color: #8C7168; font-size: 0.78rem; }
+.dark .fc .fc-daygrid-day-number, .dark .fc .fc-col-header-cell-cushion { color: #A08070; }
+.fc .fc-timegrid-slot-label { font-size: 0.72rem; color: #8C7168; }
+.dark .fc .fc-view-harness { background: #2E1E1A; border-radius: 12px; }
