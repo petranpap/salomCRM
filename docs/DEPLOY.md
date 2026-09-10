@@ -1,5 +1,19 @@
 # Deployment Documentation for Salon Management Web Application
 
+## Automated deploys (CI/CD)
+
+`.github/workflows/ci-cd.yml` runs the full test suite on every push/PR, and — on a
+successful push to `main` — SSHes into the configured VPS and deploys automatically
+(`git reset --hard origin/main`, dependency install, asset build, migrations, cache
+rebuild). It needs four GitHub Actions secrets set once, in the repo's Settings →
+Secrets and variables → Actions: `VPS_HOST`, `VPS_USERNAME`, `VPS_SSH_KEY`, `VPS_PORT`
+— and the `DEPLOY_PATH` inside the workflow file updated to the real path on the
+server. Until those are set, the deploy job simply fails to connect; it never touches
+an unconfigured server.
+
+Everything below is the manual, first-time server setup the automated deploy assumes
+already exists — a fresh server, or troubleshooting.
+
 ## Prerequisites
 
 1. **Server Requirements**

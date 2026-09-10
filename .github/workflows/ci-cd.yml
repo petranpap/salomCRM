@@ -1,0 +1,98 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, dom, fileinfo, pdo_sqlite, sqlite3, gd, zip
+          coverage: none
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-
+
+      - name: Install PHP dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Copy environment file
+        run: cp .env.example .env
+
+      - name: Generate application key
+        run: php artisan key:generate
+
+      - name: Build frontend assets
+        run: npm run build
+
+      - name: Run test suite
+        run: php artisan test
+
+  deploy:
+    name: Deploy to VPS
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+      # TEMPLATE — fill in before this can run. In the GitHub repo's Settings →
+      # Secrets and variables → Actions, add:
+      #   VPS_HOST        the server's IP or domain
+      #   VPS_USERNAME    the SSH user to deploy as (not root, ideally)
+      #   VPS_SSH_KEY     the private key matching a public key already authorized
+      #                   on the server (~/.ssh/authorized_keys for VPS_USERNAME)
+      #   VPS_PORT        SSH port (22 unless you've changed it)
+      # And update DEPLOY_PATH below to the real path of this app on the server.
+      # Until those secrets exist, this job will simply fail to connect — it
+      # won't touch anything on a server that isn't configured.
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            set -e
+            DEPLOY_PATH="/var/www/salon-manager"  # <-- change to the real path
+            cd "$DEPLOY_PATH"
+
+            git fetch origin main
+            git reset --hard origin/main
+
+            composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+            npm ci
+            npm run build
+
+            php artisan migrate --force
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+            php artisan storage:link || true
+
+            # Only if you run a queue worker under supervisor/systemd for this app.
+            # sudo supervisorctl restart salon-manager-worker:* || true
