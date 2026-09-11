@@ -1012,3 +1012,31 @@ placeholder.
 the quoted `.env` value parses correctly), and the full suite still passes 24/24 — a branding
 change touches no application logic, but worth confirming nothing was holding a stale cached
 config.
+
+---
+
+## Round 22 (2026-09-11) — First real CI run, and what it actually caught
+
+The first GitHub Actions run failed — which is exactly what CI is for. Two real issues, both
+invisible locally because the local working copy has state a fresh clone doesn't:
+
+1. **`composer.lock` and `package-lock.json` were out of sync** with the Round 21 rename
+   (`composer.json`/`package.json`'s `name` fields changed; the lock files still had the old
+   ones). `composer install`/`npm ci` don't hard-fail on this — just warn — so it wasn't *the*
+   red X, but real drift worth closing regardless. Regenerated both (`composer update --lock`,
+   `npm install --package-lock-only`) — no dependency versions changed, only the lock files' own
+   metadata.
+2. **The actual failure**: `Test directory ".../tests/Unit" not found`. `tests/Unit/` (and its
+   `Services/` subfolder) existed on disk locally but had zero files in them — and git does not
+   track empty directories. They were silently never part of any commit, so the fresh checkout
+   CI runs from simply didn't have them, and `phpunit.xml`'s `<directory>./tests/Unit</directory>`
+   testsuite entry failed immediately on a directory that, as far as git was concerned, never
+   existed. This is the exact class of bug CI exists to catch — the local machine's `vendor/`,
+   `node_modules/`, and leftover empty directories from Laravel's own scaffolding all silently
+   papered over a repo that was actually incomplete.
+
+**Fix:** `.gitkeep` placeholders in both directories.
+
+**Verified properly, not just "committed and hoped":** cloned the local repo fresh into `/tmp`
+(the same clean-checkout conditions CI runs under, no local working-copy state carried over) and
+confirmed `tests/Unit/Services/` is actually present post-clone, before pushing.
