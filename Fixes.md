@@ -1040,3 +1040,49 @@ invisible locally because the local working copy has state a fresh clone doesn't
 **Verified properly, not just "committed and hoped":** cloned the local repo fresh into `/tmp`
 (the same clean-checkout conditions CI runs under, no local working-copy state carried over) and
 confirmed `tests/Unit/Services/` is actually present post-clone, before pushing.
+
+---
+
+## Round 23 (2026-09-11) — `.env.example` was missing `CACHE_STORE`, and it would have broken login on any real fresh deploy, not just CI
+
+The `tests/Unit` fix (Round 22) got CI running, but the second run failed differently:
+`AuthenticationTest > users can authenticate using the login screen` — "The user is not
+authenticated" — and `EmailVerificationTest > email can be verified` — the `Verified` event never
+dispatched. Both are the *happy path* of flows that had passed reliably all session locally.
+
+**Reproduced locally instead of guessing from the log:** copied `.env.example` over the local
+`.env` (backing the real one up first) and re-ran the suite — same two failures, confirming this
+was an `.env.example` problem, not a CI-runner quirk. Diffed the broken `.env.example` against
+the known-working local `.env`: three real differences, one of them the actual bug —
+**`.env.example` had `CACHE_DRIVER=file`, the pre-Laravel-11 env var name. Laravel 11 renamed it
+to `CACHE_STORE`.** Without it, the cache store silently falls back to `database` instead of
+erroring, which breaks the rate-limiter `LoginRequest::ensureIsNotRateLimited()` depends on for
+every login attempt. Confirmed by appending just `CACHE_STORE=file` on top of the otherwise-broken
+`.env.example` copy and watching `AuthenticationTest` go green — isolated to that one line before
+touching anything else.
+
+This is the same class of bug as `tests/Unit`, but worse: **`.env.example` is exactly what
+`cp .env.example .env` — the first line of both the README and `docs/DEPLOY.md`'s setup steps —
+produces.** Anyone following those instructions for a real fresh deploy would have hit exactly
+this: login broken from day one, silently, with no error beyond "invalid credentials" even with
+the right password.
+
+**Given that finding, checked every other variable in the file against Laravel 11's actual config
+keys instead of stopping at the one bug** — found two more of the identical pattern, both quietly
+falling back to a default that happened to still be correct rather than erroring:
+- `FILESYSTEM_DRIVER` → real key is `FILESYSTEM_DISK` (confirmed against
+  `vendor/laravel/framework/config/filesystems.php`, since this project doesn't publish its own
+  copy of that config file).
+- `LOCALE`/`FALLBACK_LOCALE` → real keys are `APP_LOCALE`/`APP_FALLBACK_LOCALE` (confirmed against
+  the published local `config/app.php`).
+
+Also removed `TELESCOPE_ENABLED`, `APP_MODE`, `QUEUE_DRIVER`, and `DARK_MODE` — grepped the entire
+codebase for each and none of the four are read anywhere. Telescope was never actually installed
+(not in `composer.json`); `APP_MODE` was the leftover of the same fictional multi-tenancy-package
+approach `docs/MULTI_TENANT.md` describes but the app never actually implements (real
+multi-tenancy here is shared-database `salon_id` scoping); `QUEUE_DRIVER` was a dead duplicate of
+the correctly-named `QUEUE_CONNECTION` already in the file.
+
+**Verified:** copied the *fixed* `.env.example` fresh over `.env` (own copy, own `key:generate`,
+same as a real fresh install) and ran the full suite — 24/24, both previously-failing tests
+included — before restoring the real local `.env` and re-confirming 24/24 there too.
