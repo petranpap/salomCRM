@@ -125,14 +125,17 @@
 
     {{-- Why Kassandra — the signature section --}}
     <section id="why" class="bg-ts-secondary-bg/40 border-y border-ts-border-soft">
-        <div class="max-w-3xl mx-auto px-6 sm:px-8 py-20 sm:py-28 text-center">
-            <p class="text-[11px] font-bold uppercase tracking-widest text-ts-primary mb-6">Why "Kassandra"</p>
+        <div class="max-w-2xl mx-auto px-6 sm:px-8 py-20 sm:py-28 text-center">
+            <img src="{{ asset('images/logo-mark.svg') }}" alt="" class="w-9 h-auto mx-auto mb-7">
+            <p class="text-[11px] font-bold uppercase tracking-widest text-ts-primary mb-6">Why a mirror</p>
             <p class="font-display text-2xl sm:text-3xl leading-snug text-ts-text" style="font-family: 'DM Serif Display', serif;">
-                "Every product needs a name. This one is named after my daughter. In Greek myth,
-                Kassandra saw the truth clearly — that's the idea here too: a system that shows
-                you exactly what's happening in your salon, today, without the noise."
+                A hand mirror, drawn plainly. It's a real object in every salon in the world — but
+                it's also the mark's whole argument: in Greek myth, Kassandra saw the truth
+                clearly. A mirror doesn't flatter or hide anything; it just shows you what's
+                actually there. That's the same job this software does for a salon's day —
+                appointments, revenue, who's booked when — reflected back plainly, nothing
+                dressed up.
             </p>
-            <p class="mt-6 text-sm text-ts-text-subtle">— Petros, founder</p>
         </div>
     </section>
 

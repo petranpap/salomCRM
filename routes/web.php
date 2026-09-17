@@ -19,10 +19,18 @@ use App\Http\Controllers\PendingChangeController;
 use App\Http\Controllers\ClientInsightsController;
 use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\PlatformAdminController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/', function () {
     return auth()->check() ? redirect()->route('dashboard') : view('welcome');
 });
+
+// Deliberately outside the must_change_password/onboarding gate below — this page
+// only shows a brief animation and then follows `next`, which is where those gates
+// actually apply, on the request that lands there.
+Route::get('/welcome-back', [AuthenticatedSessionController::class, 'loading'])
+    ->middleware('auth')
+    ->name('login.loading');
 
 Route::middleware(['auth', 'must_change_password', 'onboarding'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

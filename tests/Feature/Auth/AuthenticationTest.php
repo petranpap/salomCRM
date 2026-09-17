@@ -27,7 +27,10 @@ class AuthenticationTest extends TestCase
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect(route('dashboard', absolute: false));
+        // Lands on the brief branded loading screen first, carrying where the user
+        // was actually headed (the dashboard, here) as `next` — not the dashboard
+        // directly. See AuthenticatedSessionController::store()/loading().
+        $response->assertRedirect(route('login.loading', ['next' => route('dashboard', absolute: false)]));
     }
 
     public function test_users_can_not_authenticate_with_invalid_password(): void

@@ -1117,3 +1117,52 @@ page and unnecessary weight for a first impression).
 **Verified:** confirmed a guest actually sees the new content (not just that the route returns
 200) and that a logged-in user is still redirected straight to the dashboard, unchanged. Rebuilt
 assets and ran the full suite: 24/24, no regressions.
+
+---
+
+## Round 25 (2026-09-17) — Logo mark, "Why a mirror" copy, and a branded post-login loader
+
+**Logo.** New `public/images/logo-mark.svg` (+ a white variant for dark backgrounds) — a plainly
+drawn hand mirror. Grounded in both the product and the myth: a mirror is a real object in every
+salon, and it's also literally what Kassandra's namesake did in Greek myth — saw the truth
+clearly, no flattery, no hiding anything. Deliberately simple geometry (one stroked ellipse, one
+capped line) specifically so it survives being shrunk to a 16px favicon, which a fussier monogram
+usually can't. Color comes from the app's own existing `ts-primary` token, not a new one-off
+value. Wired in as the favicon on all three layouts, next to the wordmark in the sidebar, and in
+the landing page header.
+
+**Landing page copy.** Replaced the "named after my daughter" framing in the "Why Kassandra"
+section — too personal for a customer-facing page — with an explanation of the mark itself (the
+mirror/"sees the truth clearly" rationale above), paired visually with the mark.
+
+**A branded loading screen after login.** `AuthenticatedSessionController::store()` no longer
+redirects straight to the dashboard (or wherever `intended()` would send someone) — it now
+captures that same destination and redirects to a new `/welcome-back` page
+(`login.loading` route) that shows a ~3s animated loader (the coin-flip spin + mirror mark,
+exact CSS as given) before a client-side redirect completes the trip.
+
+**Real security consideration, not just wiring it up:** the intended destination is Laravel's own
+`url.intended` session value under normal use, but putting it in a **query string**
+(`?next=/dashboard`) makes it directly visible and editable by anyone looking at the URL —
+unlike the session value it started from. Without a check, this is a textbook open-redirect: a
+link like `studiokassandra.com/welcome-back?next=https://evil.example.com` would show the
+legitimate-looking branded loader, then send the (already-authenticated) victim to an attacker's
+page. `AuthenticatedSessionController::loading()` now rejects anything that isn't a same-site
+relative path (must start with `/`, and specifically not `//`, which browsers still treat as
+absolute) and falls back to the dashboard instead.
+
+Also updated `tests/Feature/Auth/AuthenticationTest.php` — the stock Breeze test asserted a
+direct redirect to `/dashboard`, which is no longer what actually happens; updated it to assert
+the real new behavior (redirect to `login.loading` carrying the dashboard as `next`) rather than
+leaving it to fail or loosening it.
+
+**Verified:**
+- A real login now lands on `/welcome-back?next=%2Fdashboard`, that page actually contains the
+  loader markup, and its embedded script targets `/dashboard`.
+- All three open-redirect payloads (`https://evil.com`, `//evil.com`,
+  `http://evil.com/phish`) tested directly against the route: none end up in the page's redirect
+  script; all three silently fall back to `/dashboard` instead.
+- A legitimate relative deep link (`/staff`) passed as `next` is correctly honored — the guard
+  doesn't overreach and break real intended-URL redirects.
+- A guest hitting `/welcome-back` directly is redirected to `/login`, not shown the loader.
+- Full suite: 24/24, including the updated `AuthenticationTest`, no regressions.
