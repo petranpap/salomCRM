@@ -4,16 +4,19 @@
        :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'">
 
     {{-- Brand --}}
-    <div class="h-16 flex flex-col justify-center px-5 shrink-0 border-b border-ts-border-soft">
-        <a href="{{ route('dashboard') }}" class="font-display text-lg leading-tight tracking-tight text-ts-primary">
-            {{ config('app.name', 'Studio Kassandra') }}
+    <div class="h-16 flex items-center gap-2.5 px-5 shrink-0 border-b border-ts-border-soft">
+        <img src="{{ asset('images/logo-mark.svg') }}" alt="" class="w-5 h-6 shrink-0">
+        <a href="{{ route('dashboard') }}" class="min-w-0">
+            <span class="block font-display text-lg leading-tight tracking-tight text-ts-primary truncate">
+                {{ config('app.name', 'Studio Kassandra') }}
+            </span>
+            <span class="block text-[10px] font-semibold uppercase tracking-widest text-ts-text-subtle mt-0.5">
+                @if(auth()->user()?->isSuperAdmin()) Platform Admin
+                @elseif(auth()->user()?->isOwner()) Owner Portal
+                @else Staff Portal
+                @endif
+            </span>
         </a>
-        <span class="text-[10px] font-semibold uppercase tracking-widest text-ts-text-subtle mt-0.5">
-            @if(auth()->user()?->isSuperAdmin()) Platform Admin
-            @elseif(auth()->user()?->isOwner()) Owner Portal
-            @else Staff Portal
-            @endif
-        </span>
     </div>
 
     {{-- Nav --}}

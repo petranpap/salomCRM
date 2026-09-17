@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Studio Kassandra — Salon management, done right.</title>
     <meta name="description" content="Appointments, staff, payments, and VAT-correct receipts — one calm place to run your salon, built specifically for Cyprus.">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo-mark.svg') }}">
     @vite(['resources/css/app.css'])
 </head>
 <body class="bg-ts-bg text-ts-text antialiased" style="font-family: 'DM Sans', sans-serif;">
@@ -12,8 +13,11 @@
     {{-- Header --}}
     <header class="sticky top-0 z-30 bg-ts-bg/90 backdrop-blur border-b border-ts-border-soft">
         <div class="max-w-6xl mx-auto px-6 sm:px-8 h-16 flex items-center justify-between">
-            <a href="#" class="font-display text-lg text-ts-text" style="font-family: 'DM Serif Display', serif;">
-                Studio Kassandra
+            <a href="#" class="flex items-center gap-2.5">
+                <img src="{{ asset('images/logo-mark.svg') }}" alt="" class="w-5 h-6 shrink-0">
+                <span class="font-display text-lg text-ts-text" style="font-family: 'DM Serif Display', serif;">
+                    Studio Kassandra
+                </span>
             </a>
             <nav class="hidden sm:flex items-center gap-8 text-sm text-ts-text-muted">
                 <a href="#features" class="hover:text-ts-text transition">Features</a>
