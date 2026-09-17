@@ -20,10 +20,15 @@
                 <a href="#why" class="hover:text-ts-text transition">Why Kassandra</a>
                 <a href="#contact" class="hover:text-ts-text transition">Contact</a>
             </nav>
-            <a href="#contact"
-               class="inline-flex items-center px-4 py-2 rounded-xl text-sm font-semibold bg-ts-primary text-white hover:bg-ts-primary-dim transition shadow-silk">
-                Request a Demo
-            </a>
+            <div class="flex items-center gap-5">
+                <a href="{{ route('login') }}" class="text-sm font-semibold text-ts-text hover:text-ts-primary transition">
+                    Log In
+                </a>
+                <a href="#contact"
+                   class="inline-flex items-center px-4 py-2 rounded-xl text-sm font-semibold bg-ts-primary text-white hover:bg-ts-primary-dim transition shadow-silk">
+                    Request a Demo
+                </a>
+            </div>
         </div>
     </header>
 
