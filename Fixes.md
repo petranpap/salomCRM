@@ -1086,3 +1086,34 @@ the correctly-named `QUEUE_CONNECTION` already in the file.
 **Verified:** copied the *fixed* `.env.example` fresh over `.env` (own copy, own `key:generate`,
 same as a real fresh install) and ran the full suite — 24/24, both previously-failing tests
 included — before restoring the real local `.env` and re-confirming 24/24 there too.
+
+---
+
+## Round 24 (2026-09-17) — A real marketing landing page (there wasn't one)
+
+`/` unconditionally redirected straight to `/dashboard`, which then bounces a guest to `/login` —
+there was no public page at all for an unauthenticated visitor, and `resources/views/welcome.blade.php`
+was a literal empty stub (`<!DOCTYPE html><html><body></body></html>`, no content). Anyone
+advertising a domain pointed at this app would have sent visitors straight to a login screen with
+zero context.
+
+Built a real one. Deliberately reused the app's own existing "Terra & Silk" design tokens
+(`tailwind.config.js`'s `ts-*` colors, DM Serif Display + DM Sans) rather than inventing a new
+palette — checked contrast numbers before relying on them: `ts-text` on `ts-bg` ≈ 8.6:1, white on
+`ts-primary` ≈ 6.7:1, both well past the 4.5:1 minimum for body text. Brand consistency between
+the marketing page and the actual product mattered more here than a fresh look, and it's a
+deliberate choice rooted in the product's real, already-shipped identity — not a generic
+AI-landing-page default. Content is all real, specific claims tied to actually-built features
+(split-shift hours, VAT-correct branded receipts, Cyta SMS, staff deactivation without losing
+history) rather than generic SaaS filler, and the CTA is "Request a Demo" / a `mailto:` link, not
+a "Sign Up Free" button — this app has no public self-serve signup, so the copy doesn't pretend
+otherwise. `/` now shows this page to guests and still sends authenticated users straight to
+`/dashboard`, unchanged.
+
+Loaded only `resources/css/app.css` via `@vite` for this page, not the full JS bundle
+(`app.js` pulls in Alpine, FullCalendar, and Flatpickr — all irrelevant to a static marketing
+page and unnecessary weight for a first impression).
+
+**Verified:** confirmed a guest actually sees the new content (not just that the route returns
+200) and that a logged-in user is still redirected straight to the dashboard, unchanged. Rebuilt
+assets and ran the full suite: 24/24, no regressions.

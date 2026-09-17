@@ -21,7 +21,7 @@ use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\PlatformAdminController;
 
 Route::get('/', function () {
-    return redirect()->route('dashboard');
+    return auth()->check() ? redirect()->route('dashboard') : view('welcome');
 });
 
 Route::middleware(['auth', 'must_change_password', 'onboarding'])->group(function () {
