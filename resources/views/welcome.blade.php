@@ -22,6 +22,7 @@
             <nav class="hidden sm:flex items-center gap-8 text-sm text-ts-text-muted">
                 <a href="#features" class="hover:text-ts-text transition">Features</a>
                 <a href="#why" class="hover:text-ts-text transition">Why Kassandra</a>
+                <a href="#faq" class="hover:text-ts-text transition">FAQ</a>
                 <a href="#contact" class="hover:text-ts-text transition">Contact</a>
             </nav>
             <div class="flex items-center gap-5">
@@ -136,6 +137,184 @@
         </div>
     </section>
 
+    {{-- FAQ — bilingual (EN/EL), searchable client-side, no page reload --}}
+    <section id="faq" class="max-w-3xl mx-auto px-6 sm:px-8 py-20 sm:py-28">
+        <div class="max-w-2xl mb-10">
+            <p class="text-[11px] font-bold uppercase tracking-widest text-ts-primary mb-3">FAQ</p>
+            <h2 class="font-display text-3xl sm:text-4xl text-ts-text" style="font-family: 'DM Serif Display', serif;">
+                Questions, answered.
+            </h2>
+        </div>
+
+        <div class="flex items-center justify-between flex-wrap gap-3 mb-6">
+            <div class="relative flex-1 min-w-[220px]">
+                <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-ts-text-subtle pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 10.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z"/>
+                </svg>
+                <input type="search" id="faq-search" placeholder="Search questions…" aria-label="Search FAQ"
+                       class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-ts-border-soft bg-white text-sm text-ts-text focus:outline-none focus:ring-2 focus:ring-ts-primary/30 focus:border-ts-primary transition">
+            </div>
+            <div class="inline-flex items-center rounded-xl border border-ts-border-soft bg-white p-1 shrink-0" role="group" aria-label="FAQ language">
+                <button type="button" data-faq-lang="en" class="faq-lang-btn px-3.5 py-1.5 rounded-lg text-sm font-semibold transition">EN</button>
+                <button type="button" data-faq-lang="el" class="faq-lang-btn px-3.5 py-1.5 rounded-lg text-sm font-semibold transition">ΕΛ</button>
+            </div>
+        </div>
+
+        <div id="faq-list-en" class="faq-list space-y-3" lang="en">
+            <details class="faq-item group bg-ts-surface border border-ts-border-soft rounded-card-lg overflow-hidden">
+                <summary class="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer select-none [&::-webkit-details-marker]:hidden text-sm sm:text-base font-semibold text-ts-text">
+                    <span>What is Studio Kassandra?</span>
+                    <svg class="w-4 h-4 shrink-0 text-ts-text-subtle transition-transform group-open:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-5 pb-4 text-sm text-ts-text-muted leading-relaxed">
+                    A salon management platform built specifically for Cyprus — appointments, staff schedules, payments, and VAT-correct receipts, all in one calm place.
+                </div>
+            </details>
+            <details class="faq-item group bg-ts-surface border border-ts-border-soft rounded-card-lg overflow-hidden">
+                <summary class="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer select-none [&::-webkit-details-marker]:hidden text-sm sm:text-base font-semibold text-ts-text">
+                    <span>How do I get started?</span>
+                    <svg class="w-4 h-4 shrink-0 text-ts-text-subtle transition-transform group-open:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-5 pb-4 text-sm text-ts-text-muted leading-relaxed">
+                    There's no public sign-up on purpose — every salon is set up personally, so it works correctly from day one. Reach out through the contact section below and we'll get you started.
+                </div>
+            </details>
+            <details class="faq-item group bg-ts-surface border border-ts-border-soft rounded-card-lg overflow-hidden">
+                <summary class="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer select-none [&::-webkit-details-marker]:hidden text-sm sm:text-base font-semibold text-ts-text">
+                    <span>Does it send appointment reminders?</span>
+                    <svg class="w-4 h-4 shrink-0 text-ts-text-subtle transition-transform group-open:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-5 pb-4 text-sm text-ts-text-muted leading-relaxed">
+                    Yes — automatic reminders by SMS (through Cyta) and email, sent about 24 hours before each appointment, with a calendar attachment so your client can add it to their own phone.
+                </div>
+            </details>
+            <details class="faq-item group bg-ts-surface border border-ts-border-soft rounded-card-lg overflow-hidden">
+                <summary class="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer select-none [&::-webkit-details-marker]:hidden text-sm sm:text-base font-semibold text-ts-text">
+                    <span>Are the receipts VAT-compliant?</span>
+                    <svg class="w-4 h-4 shrink-0 text-ts-text-subtle transition-transform group-open:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-5 pb-4 text-sm text-ts-text-muted leading-relaxed">
+                    Yes. VAT is calculated correctly every time, and receipts carry your salon's own logo and colors.
+                </div>
+            </details>
+            <details class="faq-item group bg-ts-surface border border-ts-border-soft rounded-card-lg overflow-hidden">
+                <summary class="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer select-none [&::-webkit-details-marker]:hidden text-sm sm:text-base font-semibold text-ts-text">
+                    <span>Can more than one staff member use it?</span>
+                    <svg class="w-4 h-4 shrink-0 text-ts-text-subtle transition-transform group-open:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-5 pb-4 text-sm text-ts-text-muted leading-relaxed">
+                    Yes — each staff member has their own login, calendar, and working hours, including split shifts for a lunch break.
+                </div>
+            </details>
+            <details class="faq-item group bg-ts-surface border border-ts-border-soft rounded-card-lg overflow-hidden">
+                <summary class="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer select-none [&::-webkit-details-marker]:hidden text-sm sm:text-base font-semibold text-ts-text">
+                    <span>Is my salon's data kept separate from other salons?</span>
+                    <svg class="w-4 h-4 shrink-0 text-ts-text-subtle transition-transform group-open:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-5 pb-4 text-sm text-ts-text-muted leading-relaxed">
+                    Yes. Every salon's data is fully isolated — staff only ever see their own salon's appointments, customers, and payments.
+                </div>
+            </details>
+            <details class="faq-item group bg-ts-surface border border-ts-border-soft rounded-card-lg overflow-hidden">
+                <summary class="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer select-none [&::-webkit-details-marker]:hidden text-sm sm:text-base font-semibold text-ts-text">
+                    <span>Do I need to install anything?</span>
+                    <svg class="w-4 h-4 shrink-0 text-ts-text-subtle transition-transform group-open:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-5 pb-4 text-sm text-ts-text-muted leading-relaxed">
+                    No — it runs in any modern browser, on a phone, tablet, or desktop. Nothing to install.
+                </div>
+            </details>
+            <details class="faq-item group bg-ts-surface border border-ts-border-soft rounded-card-lg overflow-hidden">
+                <summary class="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer select-none [&::-webkit-details-marker]:hidden text-sm sm:text-base font-semibold text-ts-text">
+                    <span>What if I need help after I'm set up?</span>
+                    <svg class="w-4 h-4 shrink-0 text-ts-text-subtle transition-transform group-open:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-5 pb-4 text-sm text-ts-text-muted leading-relaxed">
+                    Reach out any time through the contact section below.
+                </div>
+            </details>
+        </div>
+
+        <div id="faq-list-el" class="faq-list space-y-3 hidden" lang="el">
+            <details class="faq-item group bg-ts-surface border border-ts-border-soft rounded-card-lg overflow-hidden">
+                <summary class="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer select-none [&::-webkit-details-marker]:hidden text-sm sm:text-base font-semibold text-ts-text">
+                    <span>Τι είναι το Studio Kassandra;</span>
+                    <svg class="w-4 h-4 shrink-0 text-ts-text-subtle transition-transform group-open:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-5 pb-4 text-sm text-ts-text-muted leading-relaxed">
+                    Μια πλατφόρμα διαχείρισης κομμωτηρίου φτιαγμένη ειδικά για την Κύπρο — ραντεβού, προσωπικό, πληρωμές και αποδείξεις με σωστό ΦΠΑ, όλα σε ένα ήρεμο μέρος.
+                </div>
+            </details>
+            <details class="faq-item group bg-ts-surface border border-ts-border-soft rounded-card-lg overflow-hidden">
+                <summary class="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer select-none [&::-webkit-details-marker]:hidden text-sm sm:text-base font-semibold text-ts-text">
+                    <span>Πώς ξεκινάω;</span>
+                    <svg class="w-4 h-4 shrink-0 text-ts-text-subtle transition-transform group-open:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-5 pb-4 text-sm text-ts-text-muted leading-relaxed">
+                    Δεν υπάρχει δημόσια εγγραφή σκόπιμα — κάθε κομμωτήριο ρυθμίζεται προσωπικά, ώστε να λειτουργεί σωστά από την πρώτη μέρα. Επικοινωνήστε μαζί μας από την ενότητα επικοινωνίας πιο κάτω και θα σας ξεκινήσουμε.
+                </div>
+            </details>
+            <details class="faq-item group bg-ts-surface border border-ts-border-soft rounded-card-lg overflow-hidden">
+                <summary class="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer select-none [&::-webkit-details-marker]:hidden text-sm sm:text-base font-semibold text-ts-text">
+                    <span>Στέλνει υπενθυμίσεις ραντεβού;</span>
+                    <svg class="w-4 h-4 shrink-0 text-ts-text-subtle transition-transform group-open:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-5 pb-4 text-sm text-ts-text-muted leading-relaxed">
+                    Ναι — αυτόματες υπενθυμίσεις μέσω SMS (μέσω Cyta) και email, περίπου 24 ώρες πριν από κάθε ραντεβού, με συνημμένο αρχείο ημερολογίου ώστε ο πελάτης να το προσθέσει στο δικό του κινητό.
+                </div>
+            </details>
+            <details class="faq-item group bg-ts-surface border border-ts-border-soft rounded-card-lg overflow-hidden">
+                <summary class="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer select-none [&::-webkit-details-marker]:hidden text-sm sm:text-base font-semibold text-ts-text">
+                    <span>Οι αποδείξεις είναι σύμφωνες με τον ΦΠΑ;</span>
+                    <svg class="w-4 h-4 shrink-0 text-ts-text-subtle transition-transform group-open:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-5 pb-4 text-sm text-ts-text-muted leading-relaxed">
+                    Ναι. Ο ΦΠΑ υπολογίζεται σωστά κάθε φορά, και οι αποδείξεις φέρουν το δικό σας λογότυπο και χρώματα.
+                </div>
+            </details>
+            <details class="faq-item group bg-ts-surface border border-ts-border-soft rounded-card-lg overflow-hidden">
+                <summary class="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer select-none [&::-webkit-details-marker]:hidden text-sm sm:text-base font-semibold text-ts-text">
+                    <span>Μπορεί να το χρησιμοποιεί περισσότερο από ένα μέλος προσωπικού;</span>
+                    <svg class="w-4 h-4 shrink-0 text-ts-text-subtle transition-transform group-open:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-5 pb-4 text-sm text-ts-text-muted leading-relaxed">
+                    Ναι — κάθε μέλος προσωπικού έχει τη δική του σύνδεση, ημερολόγιο και ωράριο εργασίας, με δυνατότητα διαλείμματος μεσημεριανού.
+                </div>
+            </details>
+            <details class="faq-item group bg-ts-surface border border-ts-border-soft rounded-card-lg overflow-hidden">
+                <summary class="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer select-none [&::-webkit-details-marker]:hidden text-sm sm:text-base font-semibold text-ts-text">
+                    <span>Τα δεδομένα του κομμωτηρίου μου είναι ξεχωριστά από άλλα κομμωτήρια;</span>
+                    <svg class="w-4 h-4 shrink-0 text-ts-text-subtle transition-transform group-open:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-5 pb-4 text-sm text-ts-text-muted leading-relaxed">
+                    Ναι. Τα δεδομένα κάθε κομμωτηρίου είναι πλήρως απομονωμένα — το προσωπικό βλέπει μόνο τα δικά του ραντεβού, πελάτες και πληρωμές.
+                </div>
+            </details>
+            <details class="faq-item group bg-ts-surface border border-ts-border-soft rounded-card-lg overflow-hidden">
+                <summary class="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer select-none [&::-webkit-details-marker]:hidden text-sm sm:text-base font-semibold text-ts-text">
+                    <span>Χρειάζεται να εγκαταστήσω κάτι;</span>
+                    <svg class="w-4 h-4 shrink-0 text-ts-text-subtle transition-transform group-open:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-5 pb-4 text-sm text-ts-text-muted leading-relaxed">
+                    Όχι — λειτουργεί σε οποιονδήποτε σύγχρονο browser, σε κινητό, tablet ή υπολογιστή. Τίποτα για εγκατάσταση.
+                </div>
+            </details>
+            <details class="faq-item group bg-ts-surface border border-ts-border-soft rounded-card-lg overflow-hidden">
+                <summary class="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer select-none [&::-webkit-details-marker]:hidden text-sm sm:text-base font-semibold text-ts-text">
+                    <span>Τι γίνεται αν χρειαστώ βοήθεια αφού έχω ξεκινήσει;</span>
+                    <svg class="w-4 h-4 shrink-0 text-ts-text-subtle transition-transform group-open:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-5 pb-4 text-sm text-ts-text-muted leading-relaxed">
+                    Επικοινωνήστε μαζί μας όποτε χρειαστεί από την ενότητα επικοινωνίας πιο κάτω.
+                </div>
+            </details>
+        </div>
+
+        <p id="faq-empty" class="hidden text-center text-sm text-ts-text-subtle py-10">
+            No matching questions — try a different search.
+        </p>
+    </section>
+
     {{-- Contact / CTA --}}
     <section id="contact" class="max-w-6xl mx-auto px-6 sm:px-8 py-20 sm:py-28 text-center">
         <h2 class="font-display text-3xl sm:text-4xl text-ts-text mb-4" style="font-family: 'DM Serif Display', serif;">
@@ -158,6 +337,50 @@
             <span>Salon management, done right.</span>
         </div>
     </footer>
+
+    <script>
+        (function () {
+            var searchInput = document.getElementById('faq-search');
+            var langButtons = document.querySelectorAll('.faq-lang-btn');
+            var lists = { en: document.getElementById('faq-list-en'), el: document.getElementById('faq-list-el') };
+            var emptyMessage = document.getElementById('faq-empty');
+            var currentLang = 'en';
+
+            function setLang(lang) {
+                currentLang = lang;
+                lists.en.classList.toggle('hidden', lang !== 'en');
+                lists.el.classList.toggle('hidden', lang !== 'el');
+                langButtons.forEach(function (button) {
+                    var active = button.dataset.faqLang === lang;
+                    button.classList.toggle('bg-ts-primary', active);
+                    button.classList.toggle('text-white', active);
+                    button.classList.toggle('text-ts-text-muted', !active);
+                });
+                filter();
+            }
+
+            function filter() {
+                var query = searchInput.value.trim().toLowerCase();
+                var items = lists[currentLang].querySelectorAll('.faq-item');
+                var visibleCount = 0;
+
+                items.forEach(function (item) {
+                    var match = query === '' || item.textContent.toLowerCase().indexOf(query) !== -1;
+                    item.classList.toggle('hidden', !match);
+                    if (match) visibleCount++;
+                });
+
+                emptyMessage.classList.toggle('hidden', visibleCount > 0);
+            }
+
+            langButtons.forEach(function (button) {
+                button.addEventListener('click', function () { setLang(button.dataset.faqLang); });
+            });
+            searchInput.addEventListener('input', filter);
+
+            setLang('en');
+        })();
+    </script>
 
 </body>
 </html>
