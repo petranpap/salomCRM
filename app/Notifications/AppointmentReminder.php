@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Models\Appointment;
 use App\Notifications\Channels\SmsChannel;
+use App\Support\AppointmentIcs;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -32,15 +33,29 @@ class AppointmentReminder extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         $appointment = $this->appointment;
-        $salonName   = $appointment->salon?->name ?? config('app.name');
+        $salon       = $appointment->salon;
+        $salonName   = $salon?->name ?? config('app.name');
 
-        return (new MailMessage)
+        $message = (new MailMessage)
             ->subject("Appointment Reminder — {$salonName}")
             ->greeting('Hi ' . $notifiable->name . ',')
             ->line('This is a reminder of your upcoming appointment:')
             ->line('**' . $appointment->service?->name . '** on ' . $appointment->start->format('l, d M Y \a\t H:i'))
             ->line('With ' . ($appointment->staffProfile?->user?->name ?? 'our team') . ' at ' . $salonName . '.')
             ->line('If you need to reschedule or cancel, please contact us as soon as possible.');
+
+        if ($salon?->phone || $salon?->email) {
+            $message->line(trim(
+                'Contact us: '
+                . collect([$salon?->phone, $salon?->email])->filter()->implode(' · ')
+            ));
+        }
+
+        return $message->attachData(
+            AppointmentIcs::build($appointment),
+            'appointment.ics',
+            ['mime' => 'text/calendar']
+        );
     }
 
     public function toSms(object $notifiable): string
