@@ -23,7 +23,9 @@ Debian/Ubuntu server (matching your MariaDB build).
 sudo apt update
 sudo apt install -y php8.4-fpm php8.4-cli php8.4-mysql php8.4-mbstring \
   php8.4-xml php8.4-curl php8.4-gd php8.4-zip php8.4-bcmath php8.4-intl \
-  nginx composer git
+  apache2 composer git
+sudo a2enmod rewrite proxy_fcgi setenvif
+sudo a2enconf php8.4-fpm
 ```
 
 - **`php8.4-gd`** — needed to embed a salon's logo on printed receipts. Without it,
@@ -139,45 +141,53 @@ sudo chown -R deploy:www-data /var/www/studio-kassandra/storage /var/www/studio-
 sudo chmod -R 775 /var/www/studio-kassandra/storage /var/www/studio-kassandra/bootstrap/cache
 ```
 
-## 5. Nginx + PHP-FPM
-
-```nginx
-server {
-    listen 80;
-    server_name your-real-domain.example;
-    root /var/www/studio-kassandra/public;
-
-    index index.php;
-    charset utf-8;
-
-    location / {
-        try_files $uri $uri/ /index.php?$query_string;
-    }
-
-    location ~ \.php$ {
-        fastcgi_pass unix:/run/php/php8.4-fpm.sock;
-        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
-        include fastcgi_params;
-    }
-
-    location ~ /\.(?!well-known).* {
-        deny all;
-    }
-
-    client_max_body_size 10M;   # logo uploads are capped at 2MB app-side, this just
-                                 # gives headroom rather than nginx rejecting first
-}
-```
+## 5. Apache + PHP-FPM
 
 ```bash
-sudo ln -s /etc/nginx/sites-available/studio-kassandra /etc/nginx/sites-enabled/
-sudo nginx -t && sudo systemctl reload nginx
+sudo nano /etc/apache2/sites-available/studio-kassandra.conf
+```
+```apache
+<VirtualHost *:80>
+    ServerName studiokassandra.com
+    ServerAlias www.studiokassandra.com
+    DocumentRoot /var/www/studio-kassandra/public
+
+    <Directory /var/www/studio-kassandra/public>
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    <FilesMatch \.php$>
+        SetHandler "proxy:unix:/run/php/php8.4-fpm.sock|fcgi://localhost"
+    </FilesMatch>
+
+    LimitRequestBody 10485760   # 10M — logo uploads are capped at 2MB app-side,
+                                 # this just gives headroom rather than Apache
+                                 # rejecting first
+
+    ErrorLog ${APACHE_LOG_DIR}/studio-kassandra-error.log
+    CustomLog ${APACHE_LOG_DIR}/studio-kassandra-access.log combined
+</VirtualHost>
+```
+
+`AllowOverride All` matters — Laravel ships a `.htaccess` in `public/` that handles
+the pretty-URL rewriting `mod_rewrite` needs; without `AllowOverride All`, Apache
+ignores it and every route but `/` 404s.
+
+`ServerName`/`ServerAlias` is what makes this vhost answer for
+`studiokassandra.com` once DNS points here — it's unrelated to the VPS's own OS-level
+hostname (`hostnamectl`), which doesn't need to change for this to work.
+
+```bash
+sudo a2ensite studio-kassandra
+sudo a2dissite 000-default
+sudo apache2ctl configtest && sudo systemctl reload apache2
 ```
 
 **SSL** (once DNS actually points at this server):
 ```bash
-sudo apt install -y certbot python3-certbot-nginx
-sudo certbot --nginx -d your-real-domain.example
+sudo apt install -y certbot python3-certbot-apache
+sudo certbot --apache -d studiokassandra.com -d www.studiokassandra.com
 ```
 
 ## 6. Wire up the GitHub Actions secrets

@@ -66,14 +66,20 @@
                    class="px-6 py-2.5 rounded-xl text-sm font-semibold text-ts-text-muted hover:bg-ts-surface-low transition">
                     Cancel
                 </a>
-                <form method="POST" action="{{ route('salons.destroy', $salon) }}" class="ml-auto"
-                      onsubmit="return confirm('Delete this salon? This cannot be undone.')">
-                    @csrf @method('DELETE')
-                    <button type="submit" class="px-6 py-2.5 rounded-xl text-sm font-semibold text-red-600 hover:bg-red-50 border border-red-200 transition">
-                        Delete Salon
-                    </button>
-                </form>
             </div>
+        </form>
+
+        {{-- Deliberately a sibling of the edit form above, not nested inside it — a
+             <form> nested inside another <form> is invalid HTML; the browser drops the
+             inner tag and merges its fields into the outer form, so both end up
+             submitting to the same URI and the DELETE method spoofing silently wins
+             over the PATCH one, turning every "Save Changes" click into a delete. --}}
+        <form method="POST" action="{{ route('salons.destroy', $salon) }}" class="pt-4 mt-4 border-t border-ts-border-soft flex justify-end"
+              onsubmit="return confirm('Delete this salon? This cannot be undone.')">
+            @csrf @method('DELETE')
+            <button type="submit" class="px-6 py-2.5 rounded-xl text-sm font-semibold text-red-600 hover:bg-red-50 border border-red-200 transition">
+                Delete Salon
+            </button>
         </form>
     </div>
 

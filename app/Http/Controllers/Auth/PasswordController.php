@@ -20,10 +20,19 @@ class PasswordController extends Controller
             'password' => ['required', Password::defaults(), 'confirmed'],
         ]);
 
+        $wasForcedChange = $request->user()->must_change_password;
+
         $request->user()->update([
             'password'              => Hash::make($validated['password']),
             'must_change_password'  => false,
         ]);
+
+        // A forced first-login change isn't gated by the onboarding middleware (only
+        // /dashboard and friends are), so without this the user is just left sitting
+        // on /profile with nothing routing them onward to onboarding.
+        if ($wasForcedChange) {
+            return redirect()->route('dashboard')->with('status', 'password-updated');
+        }
 
         return back()->with('status', 'password-updated');
     }
