@@ -50,7 +50,7 @@
                 @php $appointment = $reminder->appointment; @endphp
                 <tr class="hover:bg-ts-surface-low transition-colors align-top">
                     <td class="px-5 py-3.5 text-ts-text-muted whitespace-nowrap">
-                        {{ $reminder->created_at->format('d/m/Y H:i') }}
+                        {{ $reminder->created_at->timezone('Europe/Nicosia')->format('d/m/Y H:i') }}
                     </td>
                     <td class="px-5 py-3.5">
                         <span class="capitalize font-medium text-ts-text">{{ $reminder->channel === 'mail' ? 'Email' : 'SMS' }}</span>
