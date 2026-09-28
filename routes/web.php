@@ -17,6 +17,7 @@ use App\Http\Controllers\SalonSettingsController;
 use App\Http\Controllers\TempPdfController;
 use App\Http\Controllers\PendingChangeController;
 use App\Http\Controllers\ClientInsightsController;
+use App\Http\Controllers\ReminderLogController;
 use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\PlatformAdminController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
@@ -57,6 +58,7 @@ Route::middleware(['auth', 'must_change_password', 'onboarding'])->group(functio
         Route::post('/approvals/{pendingChange}/reject', [PendingChangeController::class, 'reject'])->name('approvals.reject');
 
         Route::get('/client-insights', [ClientInsightsController::class, 'index'])->name('client-insights.index');
+        Route::get('/reminders', [ReminderLogController::class, 'index'])->name('reminders.index');
 
         // Closing a day is a permanent fiscal action — owner/super_admin only.
         Route::get('/z-report', [ZReportController::class, 'index'])->name('z-report.index');
