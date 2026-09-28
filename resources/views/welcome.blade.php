@@ -148,15 +148,16 @@
 
         <div class="flex items-center justify-between flex-wrap gap-3 mb-6">
             <div class="relative flex-1 min-w-[220px]">
-                <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-ts-text-subtle pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ts-text-subtle pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 10.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z"/>
                 </svg>
-                <input type="search" id="faq-search" placeholder="Search questions…" aria-label="Search FAQ"
-                       class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-ts-border-soft bg-white text-sm text-ts-text focus:outline-none focus:ring-2 focus:ring-ts-primary/30 focus:border-ts-primary transition">
+                <input type="text" id="faq-search" placeholder="Search questions…" aria-label="Search FAQ" autocomplete="off"
+                       style="padding-left: 2.5rem;"
+                       class="w-full pr-4 py-2.5 rounded-xl border border-ts-border-soft bg-white text-sm text-ts-text focus:outline-none focus:ring-2 focus:ring-ts-primary/30 focus:border-ts-primary transition">
             </div>
-            <div class="inline-flex items-center rounded-xl border border-ts-border-soft bg-white p-1 shrink-0" role="group" aria-label="FAQ language">
-                <button type="button" data-faq-lang="en" class="faq-lang-btn px-3.5 py-1.5 rounded-lg text-sm font-semibold transition">EN</button>
-                <button type="button" data-faq-lang="el" class="faq-lang-btn px-3.5 py-1.5 rounded-lg text-sm font-semibold transition">ΕΛ</button>
+            <div class="flex items-center gap-1.5 shrink-0" role="group" aria-label="FAQ language">
+                <button type="button" data-faq-lang="en" class="faq-lang-btn whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide border border-ts-border-soft bg-white text-ts-text-muted transition">EN</button>
+                <button type="button" data-faq-lang="el" class="faq-lang-btn whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide border border-ts-border-soft bg-white text-ts-text-muted transition">ΕΛ</button>
             </div>
         </div>
 
@@ -353,7 +354,9 @@
                 langButtons.forEach(function (button) {
                     var active = button.dataset.faqLang === lang;
                     button.classList.toggle('bg-ts-primary', active);
+                    button.classList.toggle('border-ts-primary', active);
                     button.classList.toggle('text-white', active);
+                    button.classList.toggle('bg-white', !active);
                     button.classList.toggle('text-ts-text-muted', !active);
                 });
                 filter();
