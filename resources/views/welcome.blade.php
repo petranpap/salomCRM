@@ -21,6 +21,7 @@
             </a>
             <nav class="hidden sm:flex items-center gap-8 text-sm text-ts-text-muted">
                 <a href="#features" class="hover:text-ts-text transition">Features</a>
+                <a href="#getting-started" class="hover:text-ts-text transition">Getting Started</a>
                 <a href="#why" class="hover:text-ts-text transition">Why Kassandra</a>
                 <a href="#faq" class="hover:text-ts-text transition">FAQ</a>
                 <a href="#contact" class="hover:text-ts-text transition">Contact</a>
@@ -117,6 +118,122 @@
                     Working hours, calendar colors, and the ability to step someone back from
                     scheduling without erasing a single appointment they ever had.
                 </p>
+            </div>
+        </div>
+    </section>
+
+    {{-- Getting Started — bilingual (EN/EL) mini walkthrough for owners and staff --}}
+    <section id="getting-started" class="border-y border-ts-border-soft bg-ts-surface/40">
+        <div class="max-w-5xl mx-auto px-6 sm:px-8 py-20 sm:py-28">
+            <div class="flex items-start justify-between flex-wrap gap-4 mb-12">
+                <div class="max-w-2xl">
+                    <p class="text-[11px] font-bold uppercase tracking-widest text-ts-primary mb-3">Getting Started</p>
+                    <h2 class="font-display text-3xl sm:text-4xl text-ts-text" style="font-family: 'DM Serif Display', serif;">
+                        From first login to your first booking.
+                    </h2>
+                </div>
+                <div class="flex items-center gap-1.5 shrink-0" role="group" aria-label="Getting Started language">
+                    <button type="button" data-steps-lang="en" class="steps-lang-btn whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide border border-ts-border-soft bg-white text-ts-text-muted transition">EN</button>
+                    <button type="button" data-steps-lang="el" class="steps-lang-btn whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide border border-ts-border-soft bg-white text-ts-text-muted transition">ΕΛ</button>
+                </div>
+            </div>
+
+            <div id="steps-list-en" lang="en" class="grid sm:grid-cols-2 gap-10">
+                <div>
+                    <p class="text-[11px] font-bold uppercase tracking-widest text-ts-text-subtle mb-5">For Owners</p>
+                    <ol class="space-y-5">
+                        <li class="flex gap-4">
+                            <span class="shrink-0 w-7 h-7 rounded-full bg-ts-primary text-white text-xs font-bold flex items-center justify-center">1</span>
+                            <p class="text-sm text-ts-text-muted leading-relaxed"><span class="font-semibold text-ts-text">Request a demo</span> — reach out below and we'll set up your salon and your owner account personally.</p>
+                        </li>
+                        <li class="flex gap-4">
+                            <span class="shrink-0 w-7 h-7 rounded-full bg-ts-primary text-white text-xs font-bold flex items-center justify-center">2</span>
+                            <p class="text-sm text-ts-text-muted leading-relaxed"><span class="font-semibold text-ts-text">First login</span> — you'll get a temporary password, and set your own the first time you sign in.</p>
+                        </li>
+                        <li class="flex gap-4">
+                            <span class="shrink-0 w-7 h-7 rounded-full bg-ts-primary text-white text-xs font-bold flex items-center justify-center">3</span>
+                            <p class="text-sm text-ts-text-muted leading-relaxed"><span class="font-semibold text-ts-text">Quick setup wizard</span> — five short steps: salon details, VAT, opening hours, SMS, and your branding.</p>
+                        </li>
+                        <li class="flex gap-4">
+                            <span class="shrink-0 w-7 h-7 rounded-full bg-ts-primary text-white text-xs font-bold flex items-center justify-center">4</span>
+                            <p class="text-sm text-ts-text-muted leading-relaxed"><span class="font-semibold text-ts-text">Add your staff</span> — each person gets their own login, calendar, and working hours.</p>
+                        </li>
+                        <li class="flex gap-4">
+                            <span class="shrink-0 w-7 h-7 rounded-full bg-ts-primary text-white text-xs font-bold flex items-center justify-center">5</span>
+                            <p class="text-sm text-ts-text-muted leading-relaxed"><span class="font-semibold text-ts-text">Add services and prices</span> — then you're ready to start booking.</p>
+                        </li>
+                    </ol>
+                </div>
+                <div>
+                    <p class="text-[11px] font-bold uppercase tracking-widest text-ts-text-subtle mb-5">For Staff</p>
+                    <ol class="space-y-5">
+                        <li class="flex gap-4">
+                            <span class="shrink-0 w-7 h-7 rounded-full bg-ts-primary text-white text-xs font-bold flex items-center justify-center">1</span>
+                            <p class="text-sm text-ts-text-muted leading-relaxed"><span class="font-semibold text-ts-text">Your owner creates your account</span> — there's no sign-up to do yourself.</p>
+                        </li>
+                        <li class="flex gap-4">
+                            <span class="shrink-0 w-7 h-7 rounded-full bg-ts-primary text-white text-xs font-bold flex items-center justify-center">2</span>
+                            <p class="text-sm text-ts-text-muted leading-relaxed"><span class="font-semibold text-ts-text">First login</span> — set your own password the first time you sign in.</p>
+                        </li>
+                        <li class="flex gap-4">
+                            <span class="shrink-0 w-7 h-7 rounded-full bg-ts-primary text-white text-xs font-bold flex items-center justify-center">3</span>
+                            <p class="text-sm text-ts-text-muted leading-relaxed"><span class="font-semibold text-ts-text">Set your working hours</span> — including a lunch break, if you have one.</p>
+                        </li>
+                        <li class="flex gap-4">
+                            <span class="shrink-0 w-7 h-7 rounded-full bg-ts-primary text-white text-xs font-bold flex items-center justify-center">4</span>
+                            <p class="text-sm text-ts-text-muted leading-relaxed"><span class="font-semibold text-ts-text">You're set</span> — manage your own appointments from your calendar.</p>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <div id="steps-list-el" lang="el" class="grid sm:grid-cols-2 gap-10 hidden">
+                <div>
+                    <p class="text-[11px] font-bold uppercase tracking-widest text-ts-text-subtle mb-5">Για Ιδιοκτήτες</p>
+                    <ol class="space-y-5">
+                        <li class="flex gap-4">
+                            <span class="shrink-0 w-7 h-7 rounded-full bg-ts-primary text-white text-xs font-bold flex items-center justify-center">1</span>
+                            <p class="text-sm text-ts-text-muted leading-relaxed"><span class="font-semibold text-ts-text">Ζητάς demo</span> — επικοινωνείς μαζί μας πιο κάτω και σου φτιάχνουμε το σαλόνι και τον λογαριασμό σου προσωπικά.</p>
+                        </li>
+                        <li class="flex gap-4">
+                            <span class="shrink-0 w-7 h-7 rounded-full bg-ts-primary text-white text-xs font-bold flex items-center justify-center">2</span>
+                            <p class="text-sm text-ts-text-muted leading-relaxed"><span class="font-semibold text-ts-text">Πρώτη σύνδεση</span> — παίρνεις προσωρινό κωδικό και βάζεις δικό σου στην πρώτη είσοδο.</p>
+                        </li>
+                        <li class="flex gap-4">
+                            <span class="shrink-0 w-7 h-7 rounded-full bg-ts-primary text-white text-xs font-bold flex items-center justify-center">3</span>
+                            <p class="text-sm text-ts-text-muted leading-relaxed"><span class="font-semibold text-ts-text">Σύντομος οδηγός ρύθμισης</span> — πέντε σύντομα βήματα: στοιχεία σαλονιού, ΦΠΑ, ωράριο λειτουργίας, SMS και το branding σου.</p>
+                        </li>
+                        <li class="flex gap-4">
+                            <span class="shrink-0 w-7 h-7 rounded-full bg-ts-primary text-white text-xs font-bold flex items-center justify-center">4</span>
+                            <p class="text-sm text-ts-text-muted leading-relaxed"><span class="font-semibold text-ts-text">Προσθέτεις το προσωπικό σου</span> — κάθε άτομο παίρνει δικό του λογαριασμό, ημερολόγιο και ωράριο.</p>
+                        </li>
+                        <li class="flex gap-4">
+                            <span class="shrink-0 w-7 h-7 rounded-full bg-ts-primary text-white text-xs font-bold flex items-center justify-center">5</span>
+                            <p class="text-sm text-ts-text-muted leading-relaxed"><span class="font-semibold text-ts-text">Προσθέτεις υπηρεσίες και τιμές</span> — και είσαι έτοιμος να κλείνεις ραντεβού.</p>
+                        </li>
+                    </ol>
+                </div>
+                <div>
+                    <p class="text-[11px] font-bold uppercase tracking-widest text-ts-text-subtle mb-5">Για Προσωπικό</p>
+                    <ol class="space-y-5">
+                        <li class="flex gap-4">
+                            <span class="shrink-0 w-7 h-7 rounded-full bg-ts-primary text-white text-xs font-bold flex items-center justify-center">1</span>
+                            <p class="text-sm text-ts-text-muted leading-relaxed"><span class="font-semibold text-ts-text">Ο ιδιοκτήτης σου δημιουργεί τον λογαριασμό σου</span> — δεν κάνεις μόνος σου εγγραφή.</p>
+                        </li>
+                        <li class="flex gap-4">
+                            <span class="shrink-0 w-7 h-7 rounded-full bg-ts-primary text-white text-xs font-bold flex items-center justify-center">2</span>
+                            <p class="text-sm text-ts-text-muted leading-relaxed"><span class="font-semibold text-ts-text">Πρώτη σύνδεση</span> — βάζεις δικό σου κωδικό στην πρώτη είσοδο.</p>
+                        </li>
+                        <li class="flex gap-4">
+                            <span class="shrink-0 w-7 h-7 rounded-full bg-ts-primary text-white text-xs font-bold flex items-center justify-center">3</span>
+                            <p class="text-sm text-ts-text-muted leading-relaxed"><span class="font-semibold text-ts-text">Ρυθμίζεις το ωράριο εργασίας σου</span> — μαζί με διάλειμμα μεσημεριανού, αν έχεις.</p>
+                        </li>
+                        <li class="flex gap-4">
+                            <span class="shrink-0 w-7 h-7 rounded-full bg-ts-primary text-white text-xs font-bold flex items-center justify-center">4</span>
+                            <p class="text-sm text-ts-text-muted leading-relaxed"><span class="font-semibold text-ts-text">Είσαι έτοιμος</span> — διαχειρίζεσαι τα δικά σου ραντεβού από το ημερολόγιό σου.</p>
+                        </li>
+                    </ol>
+                </div>
             </div>
         </div>
     </section>
@@ -382,6 +499,30 @@
             searchInput.addEventListener('input', filter);
 
             setLang('en');
+        })();
+
+        (function () {
+            var stepButtons = document.querySelectorAll('.steps-lang-btn');
+            var stepLists = { en: document.getElementById('steps-list-en'), el: document.getElementById('steps-list-el') };
+
+            function setStepsLang(lang) {
+                stepLists.en.classList.toggle('hidden', lang !== 'en');
+                stepLists.el.classList.toggle('hidden', lang !== 'el');
+                stepButtons.forEach(function (button) {
+                    var active = button.dataset.stepsLang === lang;
+                    button.classList.toggle('bg-ts-primary', active);
+                    button.classList.toggle('border-ts-primary', active);
+                    button.classList.toggle('text-white', active);
+                    button.classList.toggle('bg-white', !active);
+                    button.classList.toggle('text-ts-text-muted', !active);
+                });
+            }
+
+            stepButtons.forEach(function (button) {
+                button.addEventListener('click', function () { setStepsLang(button.dataset.stepsLang); });
+            });
+
+            setStepsLang('en');
         })();
     </script>
 
